@@ -4,4 +4,119 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create-db-structure" author="PA">
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(60)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="unique_cn_users_email"/>
+            </column>
+            <column name="record_id" type="bigint"/>
+        </createTable>
+        <createTable tableName="records">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar(60)"/>
+            <column name="last_name" type="varchar(60)"/>
+            <column name="firm_name" type="varchar(60)"/>
+            <column name="address_id" type="bigint"/>
+            <column name="user_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="records"
+                                 baseColumnNames="user_id"
+                                 constraintName="FK_records_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <createTable tableName="labels">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="color" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="labels"
+                                 baseColumnNames="user_id"
+                                 constraintName="FK_labels_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <createTable tableName="records_labels">
+            <column name="record_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="label_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="records_labels" columnNames="record_id,label_id"/>
+        <addForeignKeyConstraint baseTableName="records_labels"
+                                 baseColumnNames="record_id"
+                                 constraintName="FK_records_labels_record"
+                                 referencedTableName="records"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="records_labels"
+                                 baseColumnNames="label_id"
+                                 constraintName="FK_records_labels_label"
+                                 referencedTableName="labels"
+                                 referencedColumnNames="id"/>
+        <createTable tableName="notes">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints  nullable="false" primaryKey="true"/>
+            </column>
+            <column name="record_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="notes"
+                                 baseColumnNames="record_id"
+                                 constraintName="FK_notes_record"
+                                 referencedTableName="records"
+                                 referencedColumnNames="id"/>
+        <createTable tableName="contact_details">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="record_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_detail_type" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_detail_value" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="contact_details"
+                                 baseColumnNames="record_id"
+                                 constraintName="FK_contact_details_record"
+                                 referencedTableName="records"
+                                 referencedColumnNames="id"/>
+        <createTable tableName="addresses">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="record_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street" type="varchar(255)"/>
+            <column name="city" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
 </databaseChangeLog>
