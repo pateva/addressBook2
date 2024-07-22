@@ -1,7 +1,5 @@
 package com.example.address_book.auth;
 
-import com.example.address_book.auth.CustomAuthenticationToken;
-import com.example.address_book.auth.CustomUserPrincipal;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

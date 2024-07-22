@@ -11,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
@@ -19,11 +20,13 @@ import java.util.Set;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    //todo add first name, last name etc
 
     @Column(name = "email")
     private String email;
@@ -40,5 +43,4 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Record> records;
-
 }

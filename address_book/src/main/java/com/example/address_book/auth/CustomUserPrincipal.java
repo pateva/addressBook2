@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,17 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 public class CustomUserPrincipal {
     private String username;
     private String email;
     private List<String> roles;
-
-    @Override
-    public String toString() {
-        return "CustomUserPrincipal{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
 }
