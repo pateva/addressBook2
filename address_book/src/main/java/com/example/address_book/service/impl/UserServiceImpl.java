@@ -1,7 +1,8 @@
 package com.example.address_book.service.impl;
 
 import com.example.address_book.auth.CustomUserPrincipal;
-import com.example.address_book.models.User;
+import com.example.address_book.exception.AuthenticationException;
+import com.example.address_book.model.User;
 import com.example.address_book.repository.UserRepository;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,34 +23,31 @@ public class UserServiceImpl implements UserService {
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
             if (customUserPrincipal.getEmail() == null || customUserPrincipal.getEmail().isEmpty()) {
-                //should never happen
-                throw new RuntimeException("some exception");
-                //todo add custom exception
+                throw new AuthenticationException("Email address is missing or principal is incorrect");
             }
 
             if (userRepository.existsByEmail(customUserPrincipal.getEmail())) {
                 return;
             }
 
-            userRepository.saveAndFlush(User.builder().email(customUserPrincipal.getEmail()).build());
+            userRepository.save(User.builder().email(customUserPrincipal.getEmail()).build());
         }
     }
 
     @Override
-    public Optional<User> getCurrentUser() {
+    public Optional<User> getCurrentUser() throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
             if (customUserPrincipal.getEmail() == null || customUserPrincipal.getEmail().isEmpty()) {
-                //TODO add proper exception
-                throw new RuntimeException("should also never happen");
+                throw new AuthenticationException("Email address is missing or principal is incorrect");
             }
 
             System.err.println(customUserPrincipal.getEmail());
             return userRepository.findByEmail(customUserPrincipal.getEmail());
         }
 
-        throw new RuntimeException("This should never happen");
+        throw new AuthenticationException("Authentication issue!");
     }
 }
 

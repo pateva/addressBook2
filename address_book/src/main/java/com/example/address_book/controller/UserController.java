@@ -1,4 +1,4 @@
-package com.example.address_book.controllers;
+package com.example.address_book.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

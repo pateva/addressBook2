@@ -1,46 +1,42 @@
-package com.example.address_book.models;
+package com.example.address_book.model;
 
+import com.example.address_book.util.ContactType;
+import com.example.address_book.util.converter.ContactTypeConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Entity
-@Table(name = "users")
+@Table(name = "contact_details")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class User {
+public class ContactDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    //todo add first name, last name etc
-
-    @Column(name = "email")
-    private String email;
 
     @Column(name = "record_id")
-    private String recordId;
+    private Long recordId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_id", insertable = false, updatable = false)
-    private Record personalRecord;
+    private Record record;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Label> labels;
+    @Column(name = "contact_detail_type")
+    @Convert(converter = ContactTypeConverter.class)
+    private ContactType type;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Record> records;
+    @Column(name = "contact_detail_value")
+    private String value;
+
 }

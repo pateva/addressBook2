@@ -1,4 +1,4 @@
-package com.example.address_book.utils;
+package com.example.address_book.util;
 
 import lombok.Getter;
 

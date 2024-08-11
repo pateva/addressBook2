@@ -1,9 +1,6 @@
-package com.example.address_book.models;
+package com.example.address_book.model;
 
-import com.example.address_book.utils.Color;
-import com.example.address_book.utils.converter.ColorConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,27 +13,21 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "labels")
+@Table(name = "notes")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Label {
+public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "labels")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "color")
-    @Convert(converter = ColorConverter.class)
-    private Color color;
-
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "record_id")
+    private Long recordId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
+    @JoinColumn(name = "record_id", insertable = false, updatable = false)
+    private Record record;
 
+    @Column(name = "text")
+    private String text;
 }

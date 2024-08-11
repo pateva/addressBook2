@@ -1,4 +1,4 @@
-package com.example.address_book.exceptions;
+package com.example.address_book.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

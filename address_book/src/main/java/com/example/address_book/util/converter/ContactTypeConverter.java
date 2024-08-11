@@ -1,8 +1,8 @@
-package com.example.address_book.utils.converter;
+package com.example.address_book.util.converter;
 
-import com.example.address_book.exceptions.ExceptionConstants;
-import com.example.address_book.exceptions.InvalidEnumValueException;
-import com.example.address_book.utils.ContactType;
+import com.example.address_book.exception.ExceptionConstants;
+import com.example.address_book.exception.InvalidEnumValueException;
+import com.example.address_book.util.ContactType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

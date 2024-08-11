@@ -1,6 +1,7 @@
-package com.example.address_book.controllers;
+package com.example.address_book.controller;
 
 import com.example.address_book.auth.CustomUserPrincipal;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,12 +11,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/health")
-public class SystemController {
+@RequestMapping("/api/records")
+@RequiredArgsConstructor
+public class RecordsController {
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> getHealth() {
+    public ResponseEntity<String> getRecords(@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal) {
+//        System.err.println(SecurityContextHolder.getContext().getAuthentication().getName());
+//        System.out.println(customUserPrincipal);
 
-        return new ResponseEntity<>("Health OK", HttpStatus.OK);
+        return new ResponseEntity<>("Returned records", HttpStatus.OK);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.address_book.models;
+package com.example.address_book.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

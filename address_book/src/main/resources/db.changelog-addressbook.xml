@@ -117,6 +117,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
+    </changeSet>
+    <changeSet id="add-user-inder" author="Petya Ateva">
+        <createIndex tableName="users" indexName="UQ_users_email">
+            <column name="email"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>
