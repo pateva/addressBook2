@@ -7,9 +7,11 @@ import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -34,25 +36,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getCurrentUser() {
+    public Optional<User> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
             if (customUserPrincipal.getEmail() == null || customUserPrincipal.getEmail().isEmpty()) {
-                //should never happen
-                throw new RuntimeException("some exception");
-                //todo add custom exception
+                //TODO add proper exception
+                throw new RuntimeException("should also never happen");
             }
 
-            Optional<User> user = userRepository.findByEmail(customUserPrincipal.getEmail());
-            if (user.isEmpty()) {
-                //todo add custom exception
-            }
-
-            return user.get();
+            System.err.println(customUserPrincipal.getEmail());
+            return userRepository.findByEmail(customUserPrincipal.getEmail());
         }
 
-        throw new RuntimeException("test");
+        throw new RuntimeException("This should never happen");
     }
 }
 
