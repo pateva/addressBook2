@@ -1,7 +1,7 @@
 package com.example.address_book.models;
 
 import com.example.address_book.utils.ContactType;
-import com.example.address_book.utils.converters.ContactTypeConverter;
+import com.example.address_book.utils.converter.GenericConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -33,7 +33,7 @@ public class ContactDetail {
     private Record record;
 
     @Column(name = "contact_detail_type")
-    @Convert(converter = ContactTypeConverter.class)
+    @Convert(converter = GenericConverter.class)
     private ContactType type;
 
     @Column(name = "contact_detail_value")
