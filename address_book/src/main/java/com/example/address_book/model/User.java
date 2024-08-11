@@ -26,13 +26,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    //todo add first name, last name etc
 
     @Column(name = "email")
     private String email;
 
     @Column(name = "record_id")
-    private String recordId;
+    private Long recordId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_id", insertable = false, updatable = false)
