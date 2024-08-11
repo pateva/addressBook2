@@ -1,7 +1,7 @@
 package com.example.address_book.models;
 
 import com.example.address_book.utils.Color;
-import com.example.address_book.utils.converter.GenericConverter;
+import com.example.address_book.utils.converter.ColorConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -29,7 +29,7 @@ public class Label {
     private String name;
 
     @Column(name = "color")
-    @Convert(converter = GenericConverter.class)
+    @Convert(converter = ColorConverter.class)
     private Color color;
 
     @Column(name = "user_id")
