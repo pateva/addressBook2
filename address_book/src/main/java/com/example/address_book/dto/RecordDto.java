@@ -4,6 +4,7 @@ import com.example.address_book.model.Address;
 import lombok.Data;
 import microsoft.sql.DateTimeOffset;
 
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 @Data
@@ -12,9 +13,9 @@ public class RecordDto {
     private String firstName;
     private String lastName;
     private String firmName;
-    private Address address;
+    private AddressDto address;
     private Set<ContactDetailDto> contactDetails;
     private Set<NoteDto> notes;
-    private DateTimeOffset createdAt;
-    private DateTimeOffset updatedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

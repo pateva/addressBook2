@@ -15,6 +15,12 @@
 	<description>Address Book</description>
 	<properties>
 		<java.version>17</java.version>
+		<mapstruct-processor.version>1.5.5.Final</mapstruct-processor.version>
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<maven-compiler-plugin-lombok.version>1.18.30</maven-compiler-plugin-lombok.version>
+		<maven-compiler-plugin-source.version>17</maven-compiler-plugin-source.version>
+		<maven-compiler-plugin-target.version>17</maven-compiler-plugin-target.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -79,6 +85,11 @@
 			<artifactId>java-jwt</artifactId>
 			<version>4.4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -92,6 +103,32 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${maven-compiler-plugin-source.version}</source>
+					<target>${maven-compiler-plugin-target.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${maven-compiler-plugin-lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct-processor.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>${lombok-mapstruct-binding.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 		</plugins>

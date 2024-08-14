@@ -24,7 +24,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             return true;
         } catch (Exception e) {
 
-            return false;
+            throw new RuntimeException("wtf");
         }
     }
 }

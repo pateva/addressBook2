@@ -1,9 +1,14 @@
 package com.example.address_book.service.impl;
 
 import com.example.address_book.auth.CustomUserPrincipal;
+import com.example.address_book.dto.RecordCreateDto;
+import com.example.address_book.dto.UserDto;
 import com.example.address_book.exception.AuthenticationException;
+import com.example.address_book.exception.EntityNotFoundException;
+import com.example.address_book.mapper.UserMapper;
 import com.example.address_book.model.User;
 import com.example.address_book.repository.UserRepository;
+import com.example.address_book.service.contract.RecordService;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -16,6 +21,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RecordService recordService;
+    private final UserMapper userMapper;
 
     @Override
     public void createUser() {
@@ -30,7 +37,8 @@ public class UserServiceImpl implements UserService {
                 return;
             }
 
-            userRepository.save(User.builder().email(customUserPrincipal.getEmail()).build());
+            var user = User.builder().email(customUserPrincipal.getEmail()).build();
+            userRepository.save(user);
         }
     }
 
@@ -49,5 +57,18 @@ public class UserServiceImpl implements UserService {
 
         throw new AuthenticationException("Authentication issue!");
     }
+
+    @Override
+    public UserDto addPersonalRecordToUser(Long userId, RecordCreateDto recordCreateDto) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %d does not exist!", userId)));
+
+        var recordDto = recordService.createRecord(recordCreateDto);
+        user.setRecordId(recordDto.getId());
+
+        return userMapper.mapEntityToDto(userRepository.save(user));
+    }
+
+
 }
 

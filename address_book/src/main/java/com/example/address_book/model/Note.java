@@ -15,6 +15,8 @@ import microsoft.sql.DateTimeOffset;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.OffsetDateTime;
+
 @Entity
 @Table(name = "notes")
 @AllArgsConstructor
@@ -36,9 +38,9 @@ public class Note {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private DateTimeOffset createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    private DateTimeOffset updatedAt;
+    private OffsetDateTime updatedAt;
 }

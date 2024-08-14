@@ -12,17 +12,22 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import microsoft.sql.DateTimeOffset;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class User {
     @Id
@@ -48,9 +53,9 @@ public class User {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private DateTimeOffset createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    private DateTimeOffset updatedAt;
+    private OffsetDateTime updatedAt;
 }
