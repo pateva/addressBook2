@@ -2,6 +2,7 @@ package com.example.address_book.dto;
 
 import com.example.address_book.model.Address;
 import lombok.Data;
+import microsoft.sql.DateTimeOffset;
 
 import java.util.Set;
 
@@ -14,4 +15,6 @@ public class RecordDto {
     private Address address;
     private Set<ContactDetailDto> contactDetails;
     private Set<NoteDto> notes;
+    private DateTimeOffset createdAt;
+    private DateTimeOffset updatedAt;
 }

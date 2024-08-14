@@ -123,4 +123,24 @@
             <column name="email"/>
         </createIndex>
     </changeSet>
+    <changeSet id="add-insert-update-date" author="Petya Ateva">
+        <addColumn tableName="notes">
+            <column name="created_at" type="datetimeoffset">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetimeoffset"/>
+        </addColumn>
+        <addColumn tableName="users">
+            <column name="created_at" type="datetimeoffset">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetimeoffset"/>
+        </addColumn>
+        <addColumn tableName="records">
+            <column name="created_at" type="datetimeoffset">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetimeoffset"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

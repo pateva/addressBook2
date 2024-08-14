@@ -13,6 +13,9 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import microsoft.sql.DateTimeOffset;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Set;
 
@@ -42,4 +45,12 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Record> records;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private DateTimeOffset createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private DateTimeOffset updatedAt;
 }

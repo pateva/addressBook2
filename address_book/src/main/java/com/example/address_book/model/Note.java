@@ -11,6 +11,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import microsoft.sql.DateTimeOffset;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "notes")
@@ -30,4 +33,12 @@ public class Note {
 
     @Column(name = "text")
     private String text;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private DateTimeOffset createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private DateTimeOffset updatedAt;
 }
