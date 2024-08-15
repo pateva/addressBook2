@@ -1,8 +1,6 @@
 package com.example.address_book.dto;
 
-import com.example.address_book.model.Address;
 import lombok.Data;
-import microsoft.sql.DateTimeOffset;
 
 import java.time.OffsetDateTime;
 import java.util.Set;

@@ -4,8 +4,7 @@ import com.example.address_book.dto.UserDto;
 import com.example.address_book.model.User;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {RecordMapper.class, LabelMapper.class})
 public interface UserMapper {
-    //TODO probably also fix mapping
     UserDto mapEntityToDto(User user);
 }

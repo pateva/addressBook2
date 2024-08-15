@@ -1,5 +1,6 @@
 package com.example.address_book.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,8 +13,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import microsoft.sql.DateTimeOffset;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,6 +26,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "records")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Record {
@@ -39,11 +45,8 @@ public class Record {
     @Column(name = "firm_name")
     private String firmName;
 
-    @Column(name = "address_id")
-    private Long addressId;
-
-    @OneToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @OneToOne(mappedBy = "record",cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @Column(name = "user_id")

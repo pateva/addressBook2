@@ -18,7 +18,7 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public RecordDto createRecord(RecordCreateDto recordCreateDto) {
         var record = recordMapper.mapCreateDtoToEntity(recordCreateDto);
-
+        record.getAddress().setRecord(record);
         return recordMapper.mapEntityToDto(recordRepository.save(record));
     }
 }

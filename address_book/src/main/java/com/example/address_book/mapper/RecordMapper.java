@@ -5,9 +5,8 @@ import com.example.address_book.dto.RecordDto;
 import com.example.address_book.model.Record;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {AddressMapper.class, ContactDetailMapper.class, NoteMapper.class})
 public interface RecordMapper {
-    //TODO fix mapping
-    Record mapCreateDtoToEntity(RecordCreateDto recordCreateDto);
-    RecordDto mapEntityToDto(Record record);
+    Record mapCreateDtoToEntity(RecordCreateDto createDto);
+    RecordDto mapEntityToDto(Record entity);
 }

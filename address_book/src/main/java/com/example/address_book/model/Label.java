@@ -13,16 +13,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "labels")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Label {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "labels")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
@@ -32,11 +36,8 @@ public class Label {
     @Convert(converter = ColorConverter.class)
     private Color color;
 
-    @Column(name = "user_id")
-    private Long userId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     private User user;
 
 }
