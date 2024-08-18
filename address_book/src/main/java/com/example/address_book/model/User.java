@@ -38,13 +38,6 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "record_id")
-    private Long recordId;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "record_id", insertable = false, updatable = false)
-    private Record personalRecord;
-
     @OneToMany(mappedBy = "user")
     private Set<Label> labels;
 

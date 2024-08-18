@@ -8,6 +8,7 @@ import java.util.Set;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordCreateDto {
+    private Long userId;
     private String firstName;
     private String lastName;
     private String firmName;

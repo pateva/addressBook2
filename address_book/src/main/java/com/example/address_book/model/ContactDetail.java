@@ -2,6 +2,7 @@ package com.example.address_book.model;
 
 import com.example.address_book.util.ContactType;
 import com.example.address_book.util.converter.ContactTypeConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -13,23 +14,24 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "contact_details")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class ContactDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "record_id")
-    private Long recordId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "record_id", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "record_id", nullable = false)
     private Record record;
 
     @Column(name = "contact_detail_type")

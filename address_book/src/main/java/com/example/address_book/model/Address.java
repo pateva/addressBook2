@@ -27,8 +27,7 @@ public class Address {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "record_id")
+    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
     private Record record;
 
     @Column(name = "street")

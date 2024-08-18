@@ -12,7 +12,6 @@
             <column name="email" type="varchar(60)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="unique_cn_users_email"/>
             </column>
-            <column name="record_id" type="bigint"/>
         </createTable>
         <createTable tableName="records">
             <column name="id" type="bigint" autoIncrement="true">
@@ -106,9 +105,9 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="record_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
+<!--            <column name="record_id" type="bigint">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
             <column name="street" type="varchar(255)"/>
             <column name="city" type="varchar(255)">
                 <constraints nullable="false"/>

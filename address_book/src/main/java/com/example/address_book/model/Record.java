@@ -16,8 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import microsoft.sql.DateTimeOffset;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -45,22 +43,18 @@ public class Record {
     @Column(name = "firm_name")
     private String firmName;
 
-    @OneToOne(mappedBy = "record",cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
     @Column(name = "user_id")
     private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @OneToOne(mappedBy = "personalRecord")
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User personalUser;
-
-    @OneToMany(mappedBy = "record")
+    @OneToMany(mappedBy = "record", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ContactDetail> contactDetails;
 
     @OneToMany(mappedBy = "record")
