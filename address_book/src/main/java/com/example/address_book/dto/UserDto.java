@@ -10,7 +10,6 @@ import java.util.Set;
 public class UserDto {
     private Long id;
     private String email;
-    private RecordDto personalRecord;
     private Set<LabelDto> labels;
     private Set<RecordDto> records;
     private OffsetDateTime createdAt;

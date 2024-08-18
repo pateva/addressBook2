@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-   @ExceptionHandler(InvalidEnumValueException.class)
-    public ResponseEntity<?> handleInvalidEnumValueException(InvalidEnumValueException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(InvalidEnumValueException.class)
+    public ResponseEntity<?> handleInvalidEnumValueException(InvalidEnumValueException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) {
-       return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<?> handleAuthenticationException(AuthenticationException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
