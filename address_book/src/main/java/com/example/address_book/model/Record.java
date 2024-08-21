@@ -68,4 +68,7 @@ public class Record {
     @UpdateTimestamp
     private OffsetDateTime updatedAt;
 
+    @Column(name = "is_personal")
+    private boolean isPersonal;
+
 }

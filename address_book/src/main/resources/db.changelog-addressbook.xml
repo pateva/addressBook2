@@ -142,4 +142,11 @@
             <column name="updated_at" type="datetimeoffset"/>
         </addColumn>
     </changeSet>
+    <changeSet id="add-is-personal-field-to-record" author="Petya Ateva">
+        <addColumn tableName="records">
+            <column name="is_personal" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

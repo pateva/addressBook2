@@ -1,6 +1,7 @@
 package com.example.address_book.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.Set;
@@ -14,4 +15,6 @@ public class RecordCreateDto {
     private String firmName;
     private AddressDto address;
     private Set<ContactDetailDto> contactDetails;
+    @JsonProperty("isPersonal")
+    private boolean isPersonal;
 }

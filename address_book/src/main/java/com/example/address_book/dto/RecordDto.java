@@ -16,4 +16,5 @@ public class RecordDto {
     private Set<NoteDto> notes;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+    private boolean isPersonal;
 }
