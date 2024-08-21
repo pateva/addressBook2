@@ -4,11 +4,14 @@ import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
 import com.example.address_book.exception.EntityNotFoundException;
 import com.example.address_book.mapper.RecordMapper;
+import com.example.address_book.model.Record;
 import com.example.address_book.repository.RecordRepository;
 import com.example.address_book.service.contract.RecordService;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +26,21 @@ public class RecordServiceImpl implements RecordService {
             throw new EntityNotFoundException(String.format("User with id %d does not exist!", recordCreateDto.getUserId()));
         }
 
+        var personalRecordOptional = hasPersonalRecordPerUserId(recordCreateDto.getUserId()).isPresent();
+
+        //TODO
+//        if(recordCreateDto.isPersonal() && personalRecordOptional) {
+//
+//        }
+
         var record = recordMapper.mapCreateDtoToEntity(recordCreateDto);
         record.getContactDetails().forEach(e -> e.setRecord(record));
 
         return recordMapper.mapEntityToDto(recordRepository.save(record));
+    }
+
+    private Optional<Record> hasPersonalRecordPerUserId(Long userId) {
+        return recordRepository.getByUserIdAndPersonal(userId, true);
+
     }
 }
