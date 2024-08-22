@@ -21,4 +21,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    public ResponseEntity<?> handleEntityNotFoundException(EntityAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

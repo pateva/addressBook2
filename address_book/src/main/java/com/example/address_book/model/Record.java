@@ -69,6 +69,6 @@ public class Record {
     private OffsetDateTime updatedAt;
 
     @Column(name = "is_personal")
-    private boolean isPersonal;
+    private boolean personal;
 
 }

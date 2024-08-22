@@ -2,16 +2,14 @@ package com.example.address_book.service.impl;
 
 import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
+import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.exception.EntityNotFoundException;
 import com.example.address_book.mapper.RecordMapper;
-import com.example.address_book.model.Record;
 import com.example.address_book.repository.RecordRepository;
 import com.example.address_book.service.contract.RecordService;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +24,10 @@ public class RecordServiceImpl implements RecordService {
             throw new EntityNotFoundException(String.format("User with id %d does not exist!", recordCreateDto.getUserId()));
         }
 
-        var personalRecordOptional = hasPersonalRecordPerUserId(recordCreateDto.getUserId()).isPresent();
 
-        //TODO
-//        if(recordCreateDto.isPersonal() && personalRecordOptional) {
-//
-//        }
+        if(recordCreateDto.isPersonal() && personalRecordExists(recordCreateDto.getUserId())) {
+            throw new EntityAlreadyExistsException("The user already has a personal record! You can delete or update it!");
+        }
 
         var record = recordMapper.mapCreateDtoToEntity(recordCreateDto);
         record.getContactDetails().forEach(e -> e.setRecord(record));
@@ -39,8 +35,8 @@ public class RecordServiceImpl implements RecordService {
         return recordMapper.mapEntityToDto(recordRepository.save(record));
     }
 
-    private Optional<Record> hasPersonalRecordPerUserId(Long userId) {
-        return recordRepository.getByUserIdAndPersonal(userId, true);
-
+    boolean personalRecordExists(Long userId) {
+        return recordRepository.existsByUserIdAndPersonal(userId, true);
     }
+
 }
