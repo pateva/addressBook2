@@ -3,6 +3,7 @@ package com.example.address_book.mapper;
 import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
 import com.example.address_book.dto.RecordPartialDto;
+import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.model.Record;
 import org.mapstruct.Mapper;
 
@@ -14,4 +15,5 @@ public interface RecordMapper {
     RecordDto mapEntityToDto(Record entity);
     RecordPartialDto mapEntityToPartialDto(Record entity);
     List<RecordPartialDto> mapEntityListToPartialDtoList(List<Record> entityList);
+    Record mapRecordUpdateDtoToEntity(RecordUpdateDto recordUpdateDto);
 }

@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long> {
     boolean existsByUserIdAndPersonal(Long userId, boolean isPersonal);
     List<Record> getByUserIdAndPersonal(Long userId, boolean isPersonal);
+    Optional<Record> getByIdAndUserId(Long id, Long userId);
 }
