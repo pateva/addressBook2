@@ -58,8 +58,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existsById(Long id) {
-        return userRepository.existsById(id);
+    public void validateUser(Long userId) {
+        if(!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException(String.format("User with id %d does not exist!", userId));
+        }
     }
 
     @Override

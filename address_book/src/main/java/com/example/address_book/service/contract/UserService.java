@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface UserService {
     void createUser();
     Optional<User> getCurrentUser() throws Exception;
-    boolean existsById(Long id);
+    void validateUser(Long userId);
     UserDto getUserById(Long id);
 }
