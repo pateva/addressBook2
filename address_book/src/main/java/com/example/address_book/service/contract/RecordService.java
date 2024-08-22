@@ -9,4 +9,5 @@ import java.util.List;
 public interface RecordService {
     RecordDto createRecord(RecordCreateDto recordCreateDto);
     List<RecordPartialDto> getRecordsByUserId(Long userId);
+    RecordDto getRecordById(Long recordId);
 }

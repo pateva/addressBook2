@@ -8,6 +8,7 @@ import com.example.address_book.mapper.RecordMapper;
 import com.example.address_book.repository.RecordRepository;
 import com.example.address_book.service.contract.RecordService;
 import com.example.address_book.service.contract.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,14 @@ public class RecordServiceImpl implements RecordService {
         var records = recordRepository.getByUserIdAndPersonal(userId, false);
 
         return recordMapper.mapEntityListToPartialDtoList(records);
+    }
+
+    @Override
+    public RecordDto getRecordById(Long recordId) {
+        var record = recordRepository.findById(recordId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Record with id %d does not exist", recordId)));
+
+        return recordMapper.mapEntityToDto(record);
     }
 
     private boolean personalRecordExists(Long userId) {

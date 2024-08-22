@@ -35,11 +35,18 @@ public class RecordsController {
         return new ResponseEntity<>("Returned records", HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<RecordPartialDto>> getRecords(@PathVariable final Long userId) {
 
         return new ResponseEntity<>(recordService.getRecordsByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{recordId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<RecordDto> getRecordById(@PathVariable final Long recordId) {
+
+        return new ResponseEntity<>(recordService.getRecordById(recordId), HttpStatus.OK);
     }
 
     @PostMapping
