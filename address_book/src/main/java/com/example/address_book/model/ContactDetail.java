@@ -30,7 +30,7 @@ public class ContactDetail {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "record_id", nullable = false)
     private Record record;
 
