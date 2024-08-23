@@ -13,4 +13,5 @@ public interface RecordService {
     RecordDto getRecordById(Long recordId);
     RecordDto updateRecord(RecordUpdateDto recordUpdateDto);
     boolean existsById(Long id);
+    void deleteRecord(Long id);
 }

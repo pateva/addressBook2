@@ -74,6 +74,15 @@ public class RecordServiceImpl implements RecordService {
         return recordRepository.existsById(id);
     }
 
+    @Override
+    public void deleteRecord(Long id) {
+        if(!recordRepository.existsById(id)) {
+            throw new  EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, id));
+        }
+
+        recordRepository.deleteById(id);
+    }
+
     private boolean personalRecordExists(Long userId) {
         return recordRepository.existsByUserIdAndPersonal(userId, true);
     }
