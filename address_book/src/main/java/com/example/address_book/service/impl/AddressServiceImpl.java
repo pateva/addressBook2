@@ -3,6 +3,7 @@ package com.example.address_book.service.impl;
 import com.example.address_book.dto.AddressCreateDto;
 import com.example.address_book.dto.AddressDto;
 import com.example.address_book.exception.EntityAlreadyExistsException;
+import com.example.address_book.exception.EntityNotFoundException;
 import com.example.address_book.exception.MissingValueException;
 import com.example.address_book.mapper.AddressMapper;
 import com.example.address_book.repository.AddressRepository;
@@ -11,6 +12,8 @@ import com.example.address_book.service.contract.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.example.address_book.util.Constants.ADDRESS_DOES_NOT_EXIST_EXCEPTION_MSG;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +25,11 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressDto createAddress(AddressCreateDto addressDto) {
-        if(addressDto.getRecordId() == null) {
+        if (addressDto.getRecordId() == null) {
             throw new MissingValueException("Record id is required!");
         }
 
-        if(addressRepository.getByRecordId(addressDto.getRecordId()).isPresent()) {
+        if (addressRepository.getByRecordId(addressDto.getRecordId()).isPresent()) {
             throw new EntityAlreadyExistsException(String.format("Record with id %d already has an address. You can either update or delete it", addressDto.getRecordId()));
         }
 
@@ -37,4 +40,20 @@ public class AddressServiceImpl implements AddressService {
         return addressMapper.mapEntityToDto(entity);
     }
 
+    @Override
+    public AddressDto getAddress(Long id) {
+        return addressMapper.mapEntityToDto(addressRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ADDRESS_DOES_NOT_EXIST_EXCEPTION_MSG, id))));
+    }
+
+    //TODO finish
+    @Override
+    @Transactional
+    public void deleteAddress(Long id) {
+        if(!addressRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format(ADDRESS_DOES_NOT_EXIST_EXCEPTION_MSG, id));
+        }
+
+        addressRepository.deleteById(id);
+    }
 }
