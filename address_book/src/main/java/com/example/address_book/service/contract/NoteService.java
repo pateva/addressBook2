@@ -1,7 +1,9 @@
 package com.example.address_book.service.contract;
 
 import com.example.address_book.dto.NoteCreateDto;
+import com.example.address_book.dto.NoteDto;
 
 public interface NoteService {
     void createNote(NoteCreateDto noteCreateDto);
+    NoteDto getNoteById(Long id);
 }
