@@ -4,6 +4,7 @@ import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
 import com.example.address_book.dto.RecordPartialDto;
 import com.example.address_book.dto.RecordUpdateDto;
+import com.example.address_book.model.Address;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface RecordService {
     RecordDto updateRecord(RecordUpdateDto recordUpdateDto);
     boolean existsById(Long id);
     void deleteRecord(Long id);
+    void updateAddress(Long id, Address address);
 }

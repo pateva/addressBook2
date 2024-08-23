@@ -26,4 +26,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleEntityAlreadyExistsException(EntityAlreadyExistsException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MissingValueException.class)
+    public ResponseEntity<?> handleMissingValueException(MissingValueException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

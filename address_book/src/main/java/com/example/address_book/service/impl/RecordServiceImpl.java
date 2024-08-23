@@ -7,6 +7,7 @@ import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.exception.EntityNotFoundException;
 import com.example.address_book.mapper.RecordMapper;
+import com.example.address_book.model.Address;
 import com.example.address_book.model.Record;
 import com.example.address_book.repository.RecordRepository;
 import com.example.address_book.service.contract.RecordService;
@@ -31,7 +32,7 @@ public class RecordServiceImpl implements RecordService {
     public RecordDto createRecord(RecordCreateDto recordCreateDto) {
         userService.validateUser(recordCreateDto.getUserId());
 
-        if(recordCreateDto.isPersonal() && personalRecordExists(recordCreateDto.getUserId())) {
+        if (recordCreateDto.isPersonal() && personalRecordExists(recordCreateDto.getUserId())) {
             throw new EntityAlreadyExistsException("The user already has a personal record! You can delete or update it!");
         }
 
@@ -76,11 +77,20 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public void deleteRecord(Long id) {
-        if(!recordRepository.existsById(id)) {
-            throw new  EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, id));
+        if (!recordRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, id));
         }
 
         recordRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateAddress(Long id, Address address) {
+        var record = recordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, id)));
+
+        record.setAddress(address);
+        recordRepository.save(record);
     }
 
     private boolean personalRecordExists(Long userId) {
