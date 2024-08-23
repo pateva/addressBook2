@@ -50,4 +50,13 @@ public class NoteServiceImpl implements NoteService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException(String.format(NOTE_DOES_NOT_EXIST_EXCEPTION_MSG, noteUpdateDto.getId())));
     }
+
+    @Override
+    public void deleteNote(Long id) {
+        if(!noteRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format(NOTE_DOES_NOT_EXIST_EXCEPTION_MSG, id));
+        }
+
+        noteRepository.deleteById(id);
+    }
 }

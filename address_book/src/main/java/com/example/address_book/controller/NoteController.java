@@ -3,7 +3,6 @@ package com.example.address_book.controller;
 import com.example.address_book.dto.NoteCreateDto;
 import com.example.address_book.dto.NoteDto;
 import com.example.address_book.dto.NoteUpdateDto;
-import com.example.address_book.model.Note;
 import com.example.address_book.service.contract.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +40,7 @@ public class NoteController {
 
     @DeleteMapping("/{noteId}")
     public ResponseEntity<Void> deleteNote(@PathVariable final Long noteId) {
+        noteService.deleteNote(noteId);
 
         return ResponseEntity.accepted().build();
     }

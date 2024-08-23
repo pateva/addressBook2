@@ -8,5 +8,5 @@ public interface NoteService {
     void createNote(NoteCreateDto noteCreateDto);
     NoteDto getNoteById(Long id);
     NoteDto updateNote(NoteUpdateDto noteUpdateDto);
-
+    void deleteNote(Long id);
 }
