@@ -12,4 +12,5 @@ public interface RecordService {
     List<RecordPartialDto> getRecordsByUserId(Long userId);
     RecordDto getRecordById(Long recordId);
     RecordDto updateRecord(RecordUpdateDto recordUpdateDto);
+    boolean existsById(Long id);
 }

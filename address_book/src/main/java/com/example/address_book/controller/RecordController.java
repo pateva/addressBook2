@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/records")
 @RequiredArgsConstructor
-public class RecordsController {
+public class RecordController {
     private final RecordService recordService;
 
     @GetMapping("/test")

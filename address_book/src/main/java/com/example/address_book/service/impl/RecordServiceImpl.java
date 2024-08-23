@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.example.address_book.util.Constants.RECORD_DOES_NOT_EXIST_EXCEPTION_MSG;
+
 @Service
 @RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
@@ -50,7 +52,7 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public RecordDto getRecordById(Long recordId) {
         var record = recordRepository.findById(recordId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Record with id %d does not exist", recordId)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, recordId)));
 
         return recordMapper.mapEntityToDto(record);
     }
@@ -65,6 +67,11 @@ public class RecordServiceImpl implements RecordService {
                     return recordMapper.mapEntityToDto(recordRepository.save(mapValues(record, recordNew)));
                 })
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Record with this id %d or or for this user %d does not exist", recordUpdateDto.getId(), recordUpdateDto.getUserId())));
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return recordRepository.existsById(id);
     }
 
     private boolean personalRecordExists(Long userId) {
