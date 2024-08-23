@@ -2,12 +2,14 @@ package com.example.address_book.service.impl;
 
 import com.example.address_book.dto.NoteCreateDto;
 import com.example.address_book.dto.NoteDto;
+import com.example.address_book.dto.NoteUpdateDto;
 import com.example.address_book.exception.EntityNotFoundException;
 import com.example.address_book.mapper.NoteMapper;
 import com.example.address_book.repository.NoteRepository;
 import com.example.address_book.service.contract.NoteService;
 import com.example.address_book.service.contract.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import static com.example.address_book.util.Constants.NOTE_DOES_NOT_EXIST_EXCEPTION_MSG;
@@ -35,5 +37,17 @@ public class NoteServiceImpl implements NoteService {
         return noteRepository.findById(id)
                 .map(noteMapper::mapEntityToDto)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(NOTE_DOES_NOT_EXIST_EXCEPTION_MSG, id)));
+    }
+
+    @Override
+    public NoteDto updateNote(NoteUpdateDto noteUpdateDto) {
+        return noteRepository.findById(noteUpdateDto.getId())
+                .map(note -> {
+                    var noteNew = noteMapper.mapUpdateDtoToEntity(noteUpdateDto);
+                    BeanUtils.copyProperties(noteNew, note, "id", "createdAt", "updatedAt", "recordId");
+
+                    return noteMapper.mapEntityToDto(noteRepository.save(note));
+                })
+                .orElseThrow(() -> new EntityNotFoundException(String.format(NOTE_DOES_NOT_EXIST_EXCEPTION_MSG, noteUpdateDto.getId())));
     }
 }
