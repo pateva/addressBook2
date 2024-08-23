@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,7 +27,6 @@ public class RecordController {
     private final RecordService recordService;
 
     @GetMapping("/test")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> getRecord(@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal) {
 //        System.err.println(SecurityContextHolder.getContext().getAuthentication().getName());
 //        System.out.println(customUserPrincipal);
@@ -37,31 +35,26 @@ public class RecordController {
     }
 
     @GetMapping("/user/{userId}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<RecordPartialDto>> getRecords(@PathVariable final Long userId) {
 
-        return new ResponseEntity<>(recordService.getRecordsByUserId(userId), HttpStatus.OK);
+        return ResponseEntity.ok(recordService.getRecordsByUserId(userId));
     }
 
     @GetMapping("/{recordId}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RecordDto> getRecordById(@PathVariable final Long recordId) {
 
-        return new ResponseEntity<>(recordService.getRecordById(recordId), HttpStatus.OK);
+        return ResponseEntity.ok(recordService.getRecordById(recordId));
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RecordDto> createRecord(@RequestBody final RecordCreateDto recordCreateDto) {
 
-        return new ResponseEntity<>(recordService.createRecord(recordCreateDto), HttpStatus.OK);
+        return ResponseEntity.ok(recordService.createRecord(recordCreateDto));
     }
 
     @PatchMapping
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RecordDto> updateRecord(@RequestBody final RecordUpdateDto recordDto) {
 
-        return new ResponseEntity<>(recordService.updateRecord(recordDto), HttpStatus.OK);
+        return ResponseEntity.ok(recordService.updateRecord(recordDto));
     }
-
 }
