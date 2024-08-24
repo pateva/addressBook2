@@ -43,6 +43,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto getAddress(Long id) {
+
         return addressMapper.mapEntityToDto(addressRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ADDRESS_DOES_NOT_EXIST_EXCEPTION_MSG, id))));
     }
@@ -59,6 +60,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto updateAddress(AddressDto addressDto) {
+
         return addressRepository.findById(addressDto.getId())
                 .map(address -> {
                     var addressNew = addressMapper.mapDtoToEntity(addressDto);

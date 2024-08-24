@@ -106,6 +106,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     private boolean personalRecordExists(Long userId) {
+
         return recordRepository.existsByUserIdAndPersonal(userId, true);
     }
 

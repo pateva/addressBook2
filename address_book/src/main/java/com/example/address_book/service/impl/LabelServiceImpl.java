@@ -31,12 +31,14 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public LabelDto getLabel(Long id) {
+
         return labelMapper.mapEntityToDto(labelRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(LABEL_DOES_NOT_EXIST_EXCEPTION_MSG , id))));
     }
 
     @Override
     public Set<LabelDto> getByUserId(Long userId) {
+
         return labelMapper.mapEntitySetToDtoSet(labelRepository.getByUserId(userId));
     }
 }

@@ -22,11 +22,13 @@ public class LabelController {
 
     @GetMapping("/{labelId}")
     public ResponseEntity<LabelDto> getLabel(@PathVariable final Long labelId) {
+
         return ResponseEntity.ok(labelService.getLabel(labelId));
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<Set<LabelDto>> getLabelsPerUser(@PathVariable final Long userId) {
+
         return ResponseEntity.ok(labelService.getByUserId(userId));
     }
 

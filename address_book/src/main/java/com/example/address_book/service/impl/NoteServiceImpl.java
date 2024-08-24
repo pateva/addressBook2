@@ -34,6 +34,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteDto getNoteById(Long id) {
+
         return noteRepository.findById(id)
                 .map(noteMapper::mapEntityToDto)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(NOTE_DOES_NOT_EXIST_EXCEPTION_MSG, id)));

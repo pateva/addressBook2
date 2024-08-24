@@ -23,6 +23,7 @@ public class NoteController {
 
     @GetMapping("/{noteId}")
     public ResponseEntity<NoteDto> getNoteById(@PathVariable final Long noteId) {
+
         return ResponseEntity.ok(noteService.getNoteById(noteId));
     }
 
@@ -35,6 +36,7 @@ public class NoteController {
 
     @PutMapping
     public ResponseEntity<NoteDto> updateNote(@RequestBody final NoteUpdateDto noteDto) {
+
         return ResponseEntity.ok(noteService.updateNote(noteDto));
     }
 
