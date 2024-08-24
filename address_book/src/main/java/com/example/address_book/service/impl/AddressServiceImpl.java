@@ -59,9 +59,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDto updateAddress(AddressDto addressDto) {
+    public AddressDto updateAddress(Long id, AddressDto addressDto) {
 
-        return addressRepository.findById(addressDto.getId())
+        return addressRepository.findById(id)
                 .map(address -> {
                     var addressNew = addressMapper.mapDtoToEntity(addressDto);
                     BeanUtils.copyProperties(addressNew, address, "id", "recordId");

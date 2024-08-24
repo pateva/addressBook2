@@ -41,8 +41,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteDto updateNote(NoteUpdateDto noteUpdateDto) {
-        return noteRepository.findById(noteUpdateDto.getId())
+    public NoteDto updateNote(Long id, NoteUpdateDto noteUpdateDto) {
+        return noteRepository.findById(id)
                 .map(note -> {
                     var noteNew = noteMapper.mapUpdateDtoToEntity(noteUpdateDto);
                     BeanUtils.copyProperties(noteNew, note, "id", "createdAt", "updatedAt", "recordId");

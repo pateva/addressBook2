@@ -12,7 +12,7 @@ public interface RecordService {
     RecordDto createRecord(RecordCreateDto recordCreateDto);
     List<RecordPartialDto> getRecordsByUserId(Long userId);
     RecordDto getRecordById(Long recordId);
-    RecordDto updateRecord(RecordUpdateDto recordUpdateDto);
+    RecordDto updateRecord(Long id, RecordUpdateDto recordUpdateDto);
     boolean existsById(Long id);
     void deleteRecord(Long id);
     void updateAddress(Long id, Address address);

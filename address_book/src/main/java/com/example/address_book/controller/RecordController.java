@@ -42,10 +42,10 @@ public class RecordController {
         return ResponseEntity.ok(recordService.getRecordsByUserId(userId));
     }
 
-    @GetMapping("/{recordId}")
-    public ResponseEntity<RecordDto> getRecordById(@PathVariable final Long recordId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<RecordDto> getRecordById(@PathVariable final Long id) {
 
-        return ResponseEntity.ok(recordService.getRecordById(recordId));
+        return ResponseEntity.ok(recordService.getRecordById(id));
     }
 
     @PostMapping
@@ -54,15 +54,15 @@ public class RecordController {
         return ResponseEntity.ok(recordService.createRecord(recordCreateDto));
     }
 
-    @PatchMapping
-    public ResponseEntity<RecordDto> updateRecord(@RequestBody final RecordUpdateDto recordDto) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<RecordDto> updateRecord(@PathVariable final Long id, @RequestBody final RecordUpdateDto recordDto) {
 
-        return ResponseEntity.ok(recordService.updateRecord(recordDto));
+        return ResponseEntity.ok(recordService.updateRecord(id, recordDto));
     }
 
-    @DeleteMapping("/{recordId}")
-    public ResponseEntity<Void> deleteRecord(@PathVariable final Long recordId) {
-        recordService.deleteRecord(recordId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecord(@PathVariable final Long id) {
+        recordService.deleteRecord(id);
 
         return ResponseEntity.accepted().build();
     }

@@ -63,14 +63,14 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     @Transactional
-    public RecordDto updateRecord(RecordUpdateDto recordUpdateDto) {
-        return recordRepository.getByIdAndUserId(recordUpdateDto.getId(), recordUpdateDto.getUserId())
+    public RecordDto updateRecord(Long id, RecordUpdateDto recordUpdateDto) {
+        return recordRepository.getByIdAndUserId(id, recordUpdateDto.getUserId())
                 .map(record -> {
                     var recordNew = recordMapper.mapRecordUpdateDtoToEntity(recordUpdateDto);
 
                     return recordMapper.mapEntityToDto(recordRepository.save(mapValues(record, recordNew)));
                 })
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Record with this id %d or or for this user %d does not exist", recordUpdateDto.getId(), recordUpdateDto.getUserId())));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Record with this id %d or or for this user %d does not exist", id, recordUpdateDto.getUserId())));
     }
 
     @Override

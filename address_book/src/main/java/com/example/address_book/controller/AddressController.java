@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AddressController {
     private final AddressService addressService;
 
-    @GetMapping("/{addressId}")
-    public ResponseEntity<AddressDto> getAddress(@PathVariable final Long addressId) {
-        return ResponseEntity.ok(addressService.getAddress(addressId));
+    @GetMapping("/{id}")
+    public ResponseEntity<AddressDto> getAddress(@PathVariable final Long id) {
+        return ResponseEntity.ok(addressService.getAddress(id));
     }
 
     @PostMapping
@@ -30,14 +30,14 @@ public class AddressController {
         return ResponseEntity.ok(addressService.createAddress(addressDto));
     }
 
-    @PutMapping
-    public ResponseEntity<AddressDto> updateAddress(@RequestBody final AddressDto addressDto) {
-        return ResponseEntity.ok(addressService.updateAddress(addressDto));
+    @PutMapping("/{id}")
+    public ResponseEntity<AddressDto> updateAddress(@PathVariable final Long id, @RequestBody final AddressDto addressDto) {
+        return ResponseEntity.ok(addressService.updateAddress(id, addressDto));
     }
 
-    @DeleteMapping("/{addressId}")
-    public ResponseEntity<Void> deleteAddress(@PathVariable final Long addressId) {
-        addressService.deleteAddress(addressId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable final Long id) {
+        addressService.deleteAddress(id);
 
         return ResponseEntity.accepted().build();
     }

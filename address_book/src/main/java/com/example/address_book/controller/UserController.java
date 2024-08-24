@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUser(@PathVariable final Long userId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUser(@PathVariable final Long id) {
 
-        return ResponseEntity.ok(userService.getUserById(userId));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
 }

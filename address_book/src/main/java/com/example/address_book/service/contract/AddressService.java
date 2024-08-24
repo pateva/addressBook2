@@ -7,5 +7,5 @@ public interface AddressService {
     AddressDto createAddress(AddressCreateDto addressDto);
     AddressDto getAddress(Long id);
     void deleteAddress(Long id);
-    AddressDto updateAddress(AddressDto addressDto);
+    AddressDto updateAddress(Long id, AddressDto addressDto);
 }

@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class NoteController {
     private final NoteService noteService;
 
-    @GetMapping("/{noteId}")
-    public ResponseEntity<NoteDto> getNoteById(@PathVariable final Long noteId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<NoteDto> getNoteById(@PathVariable final Long id) {
 
-        return ResponseEntity.ok(noteService.getNoteById(noteId));
+        return ResponseEntity.ok(noteService.getNoteById(id));
     }
 
     @PostMapping
@@ -34,15 +34,15 @@ public class NoteController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping
-    public ResponseEntity<NoteDto> updateNote(@RequestBody final NoteUpdateDto noteDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<NoteDto> updateNote(@PathVariable final Long id, @RequestBody final NoteUpdateDto noteDto) {
 
-        return ResponseEntity.ok(noteService.updateNote(noteDto));
+        return ResponseEntity.ok(noteService.updateNote(id, noteDto));
     }
 
-    @DeleteMapping("/{noteId}")
-    public ResponseEntity<Void> deleteNote(@PathVariable final Long noteId) {
-        noteService.deleteNote(noteId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteNote(@PathVariable final Long id) {
+        noteService.deleteNote(id);
 
         return ResponseEntity.accepted().build();
     }
