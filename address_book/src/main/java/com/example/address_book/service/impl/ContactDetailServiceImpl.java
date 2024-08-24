@@ -8,6 +8,7 @@ import com.example.address_book.repository.ContactDetailRepository;
 import com.example.address_book.service.contract.ContactDetailService;
 import com.example.address_book.service.contract.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,19 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     public Set<ContactDetailDto> getContactDetailsByRecordId(Long recordId) {
 
         return contactDetailMapper.mapEntitySetToDtoSet(contactDetailRepository.findByRecordId(recordId));
+    }
+
+    @Override
+    public ContactDetailDto updateContactDetails(Long id, ContactDetailDto contactDetailDto) {
+
+        return contactDetailRepository.findById(id)
+                .map(contactDetail -> {
+                    var contactDetailNew = contactDetailMapper.mapDtoToEntity(contactDetailDto);
+                    BeanUtils.copyProperties(contactDetailNew, contactDetail, "id", "record");
+
+                    return contactDetailMapper.mapEntityToDto(contactDetailRepository.save(contactDetail));
+                })
+                .orElseThrow(() -> new EntityNotFoundException(String.format(CONTACT_DOES_NOT_EXIST_EXCEPTION_MSG, id)));
     }
 
     @Override

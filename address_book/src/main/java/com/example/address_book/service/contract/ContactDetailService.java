@@ -9,4 +9,5 @@ public interface ContactDetailService {
     ContactDetailDto createContactDetail(ContactDetailCreateDto contactDetailCreateDto);
     ContactDetailDto getContactDetail(Long id);
     Set<ContactDetailDto> getContactDetailsByRecordId(Long recordId);
+    ContactDetailDto updateContactDetails(Long id, ContactDetailDto contactDetailDto);
 }
