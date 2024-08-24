@@ -4,9 +4,8 @@ import com.example.address_book.util.ContactType;
 import lombok.Data;
 
 @Data
-public class ContactDetailDto {
-    private Long id;
+public class ContactDetailCreateDto {
+    private Long recordId;
     private ContactType type;
     private String value;
-    private String recordId;
 }
