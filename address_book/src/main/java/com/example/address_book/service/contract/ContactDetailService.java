@@ -10,4 +10,5 @@ public interface ContactDetailService {
     ContactDetailDto getContactDetail(Long id);
     Set<ContactDetailDto> getContactDetailsByRecordId(Long recordId);
     ContactDetailDto updateContactDetails(Long id, ContactDetailDto contactDetailDto);
+    void deleteContactDetail(Long id);
 }

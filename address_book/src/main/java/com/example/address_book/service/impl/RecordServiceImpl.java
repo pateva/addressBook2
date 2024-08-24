@@ -119,4 +119,13 @@ public class RecordServiceImpl implements RecordService {
 
         return target;
     }
+
+    @Override
+    public void removeContactDetail(Long id, Long contactDetailId) {
+        var record = recordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, id)));
+
+        record.getContactDetails().removeIf(contact -> contact.getId().equals(contactDetailId));
+        recordRepository.save(record);
+    }
 }

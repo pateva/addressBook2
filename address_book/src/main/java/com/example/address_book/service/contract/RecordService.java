@@ -17,4 +17,5 @@ public interface RecordService {
     void deleteRecord(Long id);
     void updateAddress(Long id, Address address);
     void removeAddress(Long addressId);
+    void removeContactDetail(Long id, Long contactDetailId);
 }

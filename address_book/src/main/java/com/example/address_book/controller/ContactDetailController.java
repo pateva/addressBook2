@@ -5,6 +5,7 @@ import com.example.address_book.dto.ContactDetailDto;
 import com.example.address_book.service.contract.ContactDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,5 +44,12 @@ public class ContactDetailController {
     public ResponseEntity<ContactDetailDto> updateContactDetail(@PathVariable final Long id, @RequestBody final ContactDetailDto contactDetailDto) {
 
         return ResponseEntity.ok(contactDetailService.updateContactDetails(id, contactDetailDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteContactDetail(@PathVariable final Long id) {
+        contactDetailService.deleteContactDetail(id);
+
+        return ResponseEntity.accepted().build();
     }
 }

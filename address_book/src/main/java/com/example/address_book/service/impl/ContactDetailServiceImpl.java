@@ -52,6 +52,15 @@ public class ContactDetailServiceImpl implements ContactDetailService {
 
     @Override
     @Transactional
+    public void deleteContactDetail(Long id) {
+        var contactDetail = contactDetailRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(CONTACT_DOES_NOT_EXIST_EXCEPTION_MSG, id)));
+
+        recordService.removeContactDetail(contactDetail.getRecord().getId(), id);
+    }
+
+    @Override
+    @Transactional
     public ContactDetailDto createContactDetail(ContactDetailCreateDto contactDetailCreateDto) {
         if(!recordService.existsById(contactDetailCreateDto.getRecordId())) {
             throw new EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, contactDetailCreateDto.getRecordId()));
