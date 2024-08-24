@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +21,10 @@ import java.util.Set;
 public class LabelController {
     private final LabelService labelService;
 
-    @GetMapping("/{labelId}")
-    public ResponseEntity<LabelDto> getLabel(@PathVariable final Long labelId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<LabelDto> getLabel(@PathVariable final Long id) {
 
-        return ResponseEntity.ok(labelService.getLabel(labelId));
+        return ResponseEntity.ok(labelService.getLabel(id));
     }
 
     @GetMapping("/user/{userId}")
@@ -36,6 +37,12 @@ public class LabelController {
     public ResponseEntity<LabelDto> createLabel(@RequestBody final LabelCreateDto labelDto) {
 
         return ResponseEntity.ok(labelService.createLabel(labelDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<LabelDto> updateLabel(@PathVariable final Long id, @RequestBody final LabelDto labelDto) {
+
+        return ResponseEntity.ok(labelService.updateLabel(id, labelDto));
     }
 
 }

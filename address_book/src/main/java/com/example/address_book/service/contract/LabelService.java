@@ -10,4 +10,5 @@ public interface LabelService {
     LabelDto createLabel(LabelCreateDto labelCreateDto);
     LabelDto getLabel(Long id);
     Set<LabelDto> getByUserId(Long userId);
+    LabelDto updateLabel(Long id, LabelDto labelDto);
 }

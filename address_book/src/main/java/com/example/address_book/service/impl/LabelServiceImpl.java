@@ -8,6 +8,7 @@ import com.example.address_book.repository.LabelRepository;
 import com.example.address_book.service.contract.LabelService;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -40,5 +41,15 @@ public class LabelServiceImpl implements LabelService {
     public Set<LabelDto> getByUserId(Long userId) {
 
         return labelMapper.mapEntitySetToDtoSet(labelRepository.getByUserId(userId));
+    }
+
+    @Override
+    public LabelDto updateLabel(Long id, LabelDto labelDto) {
+        var label = labelRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(LABEL_DOES_NOT_EXIST_EXCEPTION_MSG , id)));
+        var labelNew = labelMapper.mapDtoToEntity(labelDto);
+        BeanUtils.copyProperties(labelNew, label, "id", "user");
+
+        return labelMapper.mapEntityToDto(labelRepository.save(label));
     }
 }
