@@ -4,8 +4,7 @@ import com.example.address_book.util.Color;
 import lombok.Data;
 
 @Data
-public class LabelDto {
-    private Long id;
+public class LabelCreateDto {
     private String name;
     private Color color;
     private Long userId;
