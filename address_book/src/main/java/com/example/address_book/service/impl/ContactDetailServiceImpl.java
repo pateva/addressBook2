@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
+import static com.example.address_book.util.Constants.CONTACT_DOES_NOT_EXIST_EXCEPTION_MSG;
 import static com.example.address_book.util.Constants.RECORD_DOES_NOT_EXIST_EXCEPTION_MSG;
 
 @Service
@@ -19,6 +22,19 @@ public class ContactDetailServiceImpl implements ContactDetailService {
     private final ContactDetailRepository contactDetailRepository;
     private final ContactDetailMapper contactDetailMapper;
     private final RecordService recordService;
+
+    @Override
+    public ContactDetailDto getContactDetail(Long id) {
+
+        return contactDetailMapper.mapEntityToDto(contactDetailRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(CONTACT_DOES_NOT_EXIST_EXCEPTION_MSG, id))));
+    }
+
+    @Override
+    public Set<ContactDetailDto> getContactDetailsByRecordId(Long recordId) {
+
+        return contactDetailMapper.mapEntitySetToDtoSet(contactDetailRepository.findByRecordId(recordId));
+    }
 
     @Override
     @Transactional
