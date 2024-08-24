@@ -2,6 +2,7 @@ package com.example.address_book.model;
 
 import com.example.address_book.util.Color;
 import com.example.address_book.util.converter.ColorConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -36,7 +37,7 @@ public class Label {
     @Convert(converter = ColorConverter.class)
     private Color color;
 
-    @ManyToOne()
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -5,6 +5,7 @@ import com.example.address_book.dto.LabelDto;
 import com.example.address_book.service.contract.LabelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,13 @@ public class LabelController {
     public ResponseEntity<LabelDto> updateLabel(@PathVariable final Long id, @RequestBody final LabelDto labelDto) {
 
         return ResponseEntity.ok(labelService.updateLabel(id, labelDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLabel(@PathVariable final Long id) {
+        labelService.deleteLabel(id);
+
+        return ResponseEntity.accepted().build();
     }
 
 }

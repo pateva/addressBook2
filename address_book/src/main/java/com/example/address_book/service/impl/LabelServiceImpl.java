@@ -52,4 +52,13 @@ public class LabelServiceImpl implements LabelService {
 
         return labelMapper.mapEntityToDto(labelRepository.save(label));
     }
+
+    @Override
+    public void deleteLabel(Long id) {
+        if(!labelRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format(LABEL_DOES_NOT_EXIST_EXCEPTION_MSG , id));
+        }
+
+        labelRepository.deleteById(id);
+    }
 }
