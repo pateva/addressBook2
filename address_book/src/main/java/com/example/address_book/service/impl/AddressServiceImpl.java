@@ -10,6 +10,7 @@ import com.example.address_book.repository.AddressRepository;
 import com.example.address_book.service.contract.AddressService;
 import com.example.address_book.service.contract.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,5 +55,17 @@ public class AddressServiceImpl implements AddressService {
         }
 
         recordService.removeAddress(id);
+    }
+
+    @Override
+    public AddressDto updateAddress(AddressDto addressDto) {
+        return addressRepository.findById(addressDto.getId())
+                .map(address -> {
+                    var addressNew = addressMapper.mapDtoToEntity(addressDto);
+                    BeanUtils.copyProperties(addressNew, address, "id", "recordId");
+
+                    return addressMapper.mapEntityToDto(addressRepository.save(address));
+                })
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ADDRESS_DOES_NOT_EXIST_EXCEPTION_MSG, addressDto.getId())));
     }
 }
