@@ -16,4 +16,5 @@ public interface RecordService {
     boolean existsById(Long id);
     void deleteRecord(Long id);
     void updateAddress(Long id, Address address);
+    void removeAddress(Long addressId);
 }

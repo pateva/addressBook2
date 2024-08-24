@@ -46,7 +46,6 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ADDRESS_DOES_NOT_EXIST_EXCEPTION_MSG, id))));
     }
 
-    //TODO finish
     @Override
     @Transactional
     public void deleteAddress(Long id) {
@@ -54,6 +53,6 @@ public class AddressServiceImpl implements AddressService {
             throw new EntityNotFoundException(String.format(ADDRESS_DOES_NOT_EXIST_EXCEPTION_MSG, id));
         }
 
-        addressRepository.deleteById(id);
+        recordService.removeAddress(id);
     }
 }

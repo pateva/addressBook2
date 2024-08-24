@@ -43,7 +43,7 @@ public class Record {
     @Column(name = "firm_name")
     private String firmName;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "address_id")
     private Address address;
 

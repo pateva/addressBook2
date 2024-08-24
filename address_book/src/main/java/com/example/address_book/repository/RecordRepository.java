@@ -14,4 +14,5 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     List<Record> getByUserIdAndPersonal(Long userId, boolean isPersonal);
     @EntityGraph(attributePaths = {"contactDetails", "notes"})
     Optional<Record> getByIdAndUserId(Long id, Long userId);
+    Optional<Record> getByAddressId(Long addressId);
 }

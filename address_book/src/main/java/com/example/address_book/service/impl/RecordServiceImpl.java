@@ -16,11 +16,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 import static com.example.address_book.util.Constants.RECORD_DOES_NOT_EXIST_EXCEPTION_MSG;
 
+@RestController
 @Service
 @RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
@@ -91,6 +94,15 @@ public class RecordServiceImpl implements RecordService {
 
         record.setAddress(address);
         recordRepository.save(record);
+    }
+
+    @Override
+    public void removeAddress(Long addressId) {
+       var record = recordRepository.getByAddressId(addressId)
+               .orElseThrow(() -> new EntityNotFoundException(String.format("No record for address id %d", addressId)));
+
+       record.setAddress(null);
+       recordRepository.save(record);
     }
 
     private boolean personalRecordExists(Long userId) {
