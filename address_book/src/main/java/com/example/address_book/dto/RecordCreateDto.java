@@ -13,8 +13,8 @@ public class RecordCreateDto {
     private String firstName;
     private String lastName;
     private String firmName;
-    private AddressDto address;
-    private Set<ContactDetailDto> contactDetails;
+    private AddressCreateDto address;
+    private Set<ContactDetailCreateDto> contactDetails;
     @JsonProperty("isPersonal")
     private boolean isPersonal;
 }
