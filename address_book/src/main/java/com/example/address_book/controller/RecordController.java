@@ -35,6 +35,7 @@ public class RecordController {
         return new ResponseEntity<>("Returned records", HttpStatus.OK);
     }
 
+    //TODO ADD SORTING AND FILTERING BY LABEL
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<RecordPartialDto>> getRecords(@PathVariable final Long userId) {
 
