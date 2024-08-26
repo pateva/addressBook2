@@ -15,8 +15,6 @@ import java.util.Optional;
 public interface RecordRepository extends JpaRepository<Record, Long> {
     boolean existsByUserIdAndPersonal(Long userId, boolean isPersonal);
 
-    List<Record> getByUserIdAndPersonal(Long userId, boolean isPersonal);
-
     Page<Record> getByUserIdAndPersonal(Long userId, boolean isPersonal, Pageable pageable);
 
     @Query("SELECT re FROM Record re " +

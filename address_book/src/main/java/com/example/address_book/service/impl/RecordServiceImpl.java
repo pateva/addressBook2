@@ -8,7 +8,6 @@ import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.exception.EntityNotFoundException;
 import com.example.address_book.mapper.RecordMapper;
 import com.example.address_book.model.Address;
-import com.example.address_book.model.Label;
 import com.example.address_book.model.Record;
 import com.example.address_book.model.RecordLabel;
 import com.example.address_book.model.id.RecordLabelId;

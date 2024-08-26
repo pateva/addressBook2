@@ -5,7 +5,6 @@ import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
 import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.model.Address;
-import com.example.address_book.model.Label;
 import org.springframework.data.domain.Pageable;
 
 public interface RecordService {
