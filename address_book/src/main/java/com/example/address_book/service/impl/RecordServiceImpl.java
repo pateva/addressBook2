@@ -1,8 +1,8 @@
 package com.example.address_book.service.impl;
 
+import com.example.address_book.dto.PagedRecordDto;
 import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
-import com.example.address_book.dto.RecordPartialDto;
 import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.exception.EntityNotFoundException;
@@ -14,12 +14,10 @@ import com.example.address_book.service.contract.RecordService;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static com.example.address_book.util.Constants.RECORD_DOES_NOT_EXIST_EXCEPTION_MSG;
 
@@ -46,11 +44,11 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public List<RecordPartialDto> getRecordsByUserId(Long userId) {
+    public PagedRecordDto getPagedRecordsByUserId(Long userId, Pageable pageable) {
         userService.validateUser(userId);
-        var records = recordRepository.getByUserIdAndPersonal(userId, false);
+        var pagedRecords = recordRepository.getByUserIdAndPersonal(userId, false, pageable);
 
-        return recordMapper.mapEntityListToPartialDtoList(records);
+        return recordMapper.toPagedRecordDto(pagedRecords);
     }
 
     @Override

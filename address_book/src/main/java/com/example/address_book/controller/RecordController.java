@@ -1,12 +1,14 @@
 package com.example.address_book.controller;
 
 import com.example.address_book.auth.CustomUserPrincipal;
+import com.example.address_book.dto.PagedRecordDto;
 import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
 import com.example.address_book.dto.RecordPartialDto;
 import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.service.contract.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,11 +37,10 @@ public class RecordController {
         return new ResponseEntity<>("Returned records", HttpStatus.OK);
     }
 
-    //TODO ADD SORTING AND FILTERING BY LABEL
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<RecordPartialDto>> getRecords(@PathVariable final Long userId) {
+    public ResponseEntity<PagedRecordDto> getRecordsPaged(@PathVariable final Long userId, Pageable pageable) {
 
-        return ResponseEntity.ok(recordService.getRecordsByUserId(userId));
+        return ResponseEntity.ok(recordService.getPagedRecordsByUserId(userId, pageable));
     }
 
     @GetMapping("/{id}")
