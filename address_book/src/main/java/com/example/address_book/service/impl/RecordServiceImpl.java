@@ -52,6 +52,14 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
+    public PagedRecordDto getPagedRecordsByUserIdAndLabel(Long userId, Long labelId, Pageable pageable) {
+        userService.validateUser(userId);
+        var pagedRecords = recordRepository.getByUserIdAndLabelId(userId, labelId, pageable);
+
+        return recordMapper.toPagedRecordDto(pagedRecords);
+    }
+
+    @Override
     public RecordDto getRecordById(Long recordId) {
         var record = recordRepository.findById(recordId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, recordId)));

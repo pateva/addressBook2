@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users_labels")
+@Table(name = "records_labels")
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecordLabel {

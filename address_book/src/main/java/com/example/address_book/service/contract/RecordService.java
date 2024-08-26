@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface RecordService {
     RecordDto createRecord(RecordCreateDto recordCreateDto);
     PagedRecordDto getPagedRecordsByUserId(Long userId, Pageable pageable);
+    PagedRecordDto getPagedRecordsByUserIdAndLabel(Long userId, Long labelId, Pageable pageable);
     RecordDto getRecordById(Long recordId);
     RecordDto updateRecord(Long id, RecordUpdateDto recordUpdateDto);
     boolean existsById(Long id);
