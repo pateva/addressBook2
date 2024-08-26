@@ -20,8 +20,8 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     Page<Record> getByUserIdAndPersonal(Long userId, boolean isPersonal, Pageable pageable);
 
     @Query("SELECT re FROM Record re " +
-            "RIGHT JOIN RecordLabel rl ON re.id = rl.recordId " +
-            "LEFT JOIN Label l ON rl.labelId = l.id " +
+            "RIGHT JOIN RecordLabel rl ON re.id = rl.id.recordId " +
+            "LEFT JOIN Label l ON rl.id.labelId = l.id " +
             "WHERE re.userId = :userId " +
             "AND re.personal = false " +
             "AND l.id = :labelId")

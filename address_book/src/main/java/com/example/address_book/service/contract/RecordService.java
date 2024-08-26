@@ -5,6 +5,7 @@ import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
 import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.model.Address;
+import com.example.address_book.model.Label;
 import org.springframework.data.domain.Pageable;
 
 public interface RecordService {
@@ -18,4 +19,6 @@ public interface RecordService {
     void updateAddress(Long id, Address address);
     void removeAddress(Long addressId);
     void removeContactDetail(Long id, Long contactDetailId);
+    void addLabelToRecord(Long id, Long labelId);
+    void removeLabelFromRecord(Long id, Long labelId);
 }

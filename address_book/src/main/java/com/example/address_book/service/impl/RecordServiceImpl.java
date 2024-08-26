@@ -8,7 +8,11 @@ import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.exception.EntityNotFoundException;
 import com.example.address_book.mapper.RecordMapper;
 import com.example.address_book.model.Address;
+import com.example.address_book.model.Label;
 import com.example.address_book.model.Record;
+import com.example.address_book.model.RecordLabel;
+import com.example.address_book.model.id.RecordLabelId;
+import com.example.address_book.repository.RecordLabelRepository;
 import com.example.address_book.repository.RecordRepository;
 import com.example.address_book.service.contract.RecordService;
 import com.example.address_book.service.contract.UserService;
@@ -27,6 +31,7 @@ import static com.example.address_book.util.Constants.RECORD_DOES_NOT_EXIST_EXCE
 public class RecordServiceImpl implements RecordService {
     private final RecordMapper recordMapper;
     private final RecordRepository recordRepository;
+    private final RecordLabelRepository recordLabelRepository;
     private final UserService userService;
 
     @Override
@@ -133,5 +138,29 @@ public class RecordServiceImpl implements RecordService {
 
         record.getContactDetails().removeIf(contact -> contact.getId().equals(contactDetailId));
         recordRepository.save(record);
+    }
+
+    @Override
+    public void addLabelToRecord(Long id, Long labelId) {
+        var recordLabelId = RecordLabelId.builder().labelId(labelId).recordId(id).build();
+
+        if(recordLabelRepository.existsById(recordLabelId)) {
+            //do nothing
+            return;
+        }
+
+        recordLabelRepository.save(RecordLabel.builder().id(recordLabelId).build());
+    }
+
+    @Override
+    public void removeLabelFromRecord(Long id, Long labelId) {
+        var recordLabelId = RecordLabelId.builder().labelId(labelId).recordId(id).build();
+
+        if(!recordLabelRepository.existsById(recordLabelId)) {
+            //do nothing
+            return;
+        }
+
+        recordLabelRepository.deleteById(recordLabelId);
     }
 }
