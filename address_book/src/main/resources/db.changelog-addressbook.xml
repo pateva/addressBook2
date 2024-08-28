@@ -149,4 +149,9 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="add-image-url-to-records" author="Petya Ateva">
+        <addColumn tableName="records">
+            <column name="image_url" type="varchar(256)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

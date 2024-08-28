@@ -3,6 +3,7 @@ package com.example.address_book.service.impl;
 import com.example.address_book.dto.PagedRecordDto;
 import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
+import com.example.address_book.dto.RecordImageDto;
 import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.exception.EntityNotFoundException;
@@ -167,5 +168,15 @@ public class RecordServiceImpl implements RecordService {
     public RecordDto getPersonalRecord(Long userId) {
 
         return recordMapper.mapEntityToDto(recordRepository.getByUserIdAndPersonal(userId, true));
+    }
+
+    @Override
+    public RecordDto addImageToRecord(Long id, RecordImageDto imageDto) {
+        var record = recordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(RECORD_DOES_NOT_EXIST_EXCEPTION_MSG, id)));
+        //TODO validations would be good
+        record.setImageUrl(imageDto.getImageUrl());
+
+        return recordMapper.mapEntityToDto(recordRepository.save(record));
     }
 }

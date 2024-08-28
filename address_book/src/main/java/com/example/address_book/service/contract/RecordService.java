@@ -3,6 +3,7 @@ package com.example.address_book.service.contract;
 import com.example.address_book.dto.PagedRecordDto;
 import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
+import com.example.address_book.dto.RecordImageDto;
 import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.model.Address;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,5 @@ public interface RecordService {
     void addLabelToRecord(Long id, Long labelId);
     void removeLabelFromRecord(Long id, Long labelId);
     RecordDto getPersonalRecord(Long userId);
+    RecordDto addImageToRecord(Long id, RecordImageDto imageDtp);
 }

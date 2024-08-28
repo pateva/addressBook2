@@ -8,4 +8,5 @@ public class RecordPartialDto {
     private String firstName;
     private String lastName;
     private String firmName;
+    private String imageUrl;
 }

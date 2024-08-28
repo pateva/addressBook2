@@ -71,4 +71,6 @@ public class Record {
     @Column(name = "is_personal")
     private boolean personal;
 
+    @Column(name = "image_url")
+    private String imageUrl;
 }

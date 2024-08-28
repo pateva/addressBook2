@@ -17,4 +17,5 @@ public class RecordCreateDto {
     private Set<ContactDetailCreateDto> contactDetails;
     @JsonProperty("isPersonal")
     private boolean isPersonal;
+    private String imageUrl;
 }

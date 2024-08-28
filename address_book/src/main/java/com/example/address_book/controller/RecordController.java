@@ -4,6 +4,7 @@ import com.example.address_book.auth.CustomUserPrincipal;
 import com.example.address_book.dto.PagedRecordDto;
 import com.example.address_book.dto.RecordCreateDto;
 import com.example.address_book.dto.RecordDto;
+import com.example.address_book.dto.RecordImageDto;
 import com.example.address_book.dto.RecordUpdateDto;
 import com.example.address_book.service.contract.RecordService;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,12 @@ public class RecordController {
         return ResponseEntity.accepted().build();
     }
 
+    @PatchMapping("/{id}/image")
+    public ResponseEntity<RecordDto> addImageToRecord(@PathVariable final Long id, @RequestBody final RecordImageDto url) {
+
+        return ResponseEntity.ok(recordService.addImageToRecord(id, url));
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<RecordDto> updateRecord(@PathVariable final Long id, @RequestBody final RecordUpdateDto recordDto) {
 
@@ -90,4 +97,5 @@ public class RecordController {
 
         return ResponseEntity.noContent().build();
     }
+
 }
