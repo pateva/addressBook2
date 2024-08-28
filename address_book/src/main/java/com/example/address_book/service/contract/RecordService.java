@@ -20,4 +20,5 @@ public interface RecordService {
     void removeContactDetail(Long id, Long contactDetailId);
     void addLabelToRecord(Long id, Long labelId);
     void removeLabelFromRecord(Long id, Long labelId);
+    RecordDto getPersonalRecord(Long userId);
 }

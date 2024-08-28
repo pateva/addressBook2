@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,4 +28,6 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     Optional<Record> getByIdAndUserId(Long id, Long userId);
 
     Optional<Record> getByAddressId(Long addressId);
+
+    Record getByUserIdAndPersonal(Long userId, boolean isPersonal);
 }

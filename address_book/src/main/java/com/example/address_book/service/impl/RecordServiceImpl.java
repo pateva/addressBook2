@@ -162,4 +162,10 @@ public class RecordServiceImpl implements RecordService {
 
         recordLabelRepository.deleteById(recordLabelId);
     }
+
+    @Override
+    public RecordDto getPersonalRecord(Long userId) {
+
+        return recordMapper.mapEntityToDto(recordRepository.getByUserIdAndPersonal(userId, true));
+    }
 }

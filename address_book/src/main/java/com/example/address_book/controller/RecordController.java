@@ -34,13 +34,19 @@ public class RecordController {
         return new ResponseEntity<>("Returned records", HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{userId}/records")
     public ResponseEntity<PagedRecordDto> getRecordsPaged(@PathVariable final Long userId, Pageable pageable) {
 
         return ResponseEntity.ok(recordService.getPagedRecordsByUserId(userId, pageable));
     }
 
-    @GetMapping("/user/{userId}/{labelId}")
+    @GetMapping("/user/{userId}/personal")
+    public ResponseEntity<RecordDto> getPersonalRecord(@PathVariable final Long userId) {
+
+        return ResponseEntity.ok(recordService.getPersonalRecord(userId));
+    }
+
+    @GetMapping("/user/{userId}/label/{labelId}")
     public ResponseEntity<PagedRecordDto> getRecordsByLabelPaged(@PathVariable final Long userId, @PathVariable final Long labelId, Pageable pageable) {
 
         return ResponseEntity.ok(recordService.getPagedRecordsByUserIdAndLabel(userId, labelId, pageable));
