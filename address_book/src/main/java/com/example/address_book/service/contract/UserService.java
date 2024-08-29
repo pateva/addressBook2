@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface UserService {
     void createUser();
-    Optional<User> getCurrentUser() throws Exception;
+
+    UserDto getCurrentUser();
+
     void validateUser(Long userId);
+
     UserDto getUserById(Long id);
 }

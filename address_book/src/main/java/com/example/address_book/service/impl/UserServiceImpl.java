@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 import static com.example.address_book.util.Constants.USER_DOES_NOT_EXIST_EXCEPTION_MSG;
 
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getCurrentUser() throws Exception {
+    public UserDto getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
@@ -50,11 +49,10 @@ public class UserServiceImpl implements UserService {
                 throw new AuthenticationException("Email address is missing or principal is incorrect");
             }
 
-            System.err.println(customUserPrincipal.getEmail());
-            return userRepository.findByEmail(customUserPrincipal.getEmail());
+            return userMapper.mapEntityToDto(userRepository.findByEmail(customUserPrincipal.getEmail()).orElse(null));
         }
 
-        throw new AuthenticationException("Authentication issue!");
+        return null;
     }
 
     @Override
