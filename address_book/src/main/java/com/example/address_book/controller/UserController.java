@@ -1,6 +1,7 @@
 package com.example.address_book.controller;
 
 import com.example.address_book.dto.UserDto;
+import com.example.address_book.security.VerifyUser;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
+    @VerifyUser
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable final Long id) {
 

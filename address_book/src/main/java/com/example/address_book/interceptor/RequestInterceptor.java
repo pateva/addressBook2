@@ -12,6 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class RequestInterceptor implements HandlerInterceptor {
     private final UserService userService;
 
+    //TODO This is now redundant
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         try {
