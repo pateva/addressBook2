@@ -16,7 +16,5 @@ import java.util.List;
 @Builder
 @ToString
 public class CustomUserPrincipal {
-    private String username;
     private String email;
-    private List<String> roles;
 }

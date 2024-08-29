@@ -13,17 +13,13 @@ import java.util.stream.Collectors;
 public class CustomJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
-        final String rolesPath = "roles";
         final String emailPath = "email";
-        final String nicknamePath = "nickname";
         Collection<SimpleGrantedAuthority> authorities = extractAuthorities(jwt);
         CustomUserPrincipal userPrincipal = new CustomUserPrincipal(
-                jwt.getClaimAsString(nicknamePath),
-                jwt.getClaimAsString(emailPath),
-                jwt.getClaimAsStringList(rolesPath)
+                jwt.getClaimAsString(emailPath)
         );
 
-        return new CustomAuthenticationToken(userPrincipal, userPrincipal.getRoles(), authorities);
+        return new CustomAuthenticationToken(userPrincipal, null, authorities);
     }
 
     private Collection<SimpleGrantedAuthority> extractAuthorities(Jwt jwt) {
