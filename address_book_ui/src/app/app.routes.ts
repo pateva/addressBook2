@@ -1,23 +1,21 @@
 import { Routes } from '@angular/router';
 import { RecordComponent } from './record/record.component';
 import { TestComponent } from './test/test.component';
-
-const homePath = '';
-const recordsPath = 'records';
+import {ROUTES} from '@constants/routes'
 
 export const routes: Routes = [
     {
-        path: homePath,
+        path: ROUTES.home,
         component: TestComponent,
         title: "Home"
     },
     {
-        path: recordsPath,
+        path: ROUTES.records,
         component: RecordComponent,
         title: "Record"
     },
     {
-        path: '**',
-        redirectTo: homePath
+        path: ROUTES.wildcard,
+        redirectTo: ROUTES.home
     }
 ];
