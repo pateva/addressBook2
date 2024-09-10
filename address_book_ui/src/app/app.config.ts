@@ -6,30 +6,31 @@ import { HttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser'; 
+//TODO probably something here is not working
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(),
-    // Importing required modules with Auth0 config for CSR
+    
     importProvidersFrom(
       HttpClient,
       AuthModule.forRoot({
-        domain: environment.auth0Domain,      // Auth0 domain from environment.ts
-        clientId: environment.auth0Client,  // Auth0 client ID from environment.ts
+        domain: environment.auth0Domain,     
+        clientId: environment.auth0Client, 
         authorizationParams: {
-          redirect_uri: window.location.origin, // Using window.location.origin is fine for CSR
-          audience: environment.auth0Audience, // Auth0 audience from environment.ts
+          redirect_uri: window.location.origin, 
+          audience: environment.auth0Audience, 
         },
-        useRefreshTokens: false, // Example: adjust as per your needs
+        useRefreshTokens: false, 
         httpInterceptor: {
           allowedList: [
             {
               uri: environment.api + '/*',
               tokenOptions: {
                 authorizationParams: {
-                  audience: environment.auth0Audience, // Audience for API requests
+                  audience: environment.auth0Audience, 
                 },
               },
             },
