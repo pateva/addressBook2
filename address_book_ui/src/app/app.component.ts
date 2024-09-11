@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PlatformService } from './shared/platform.service'; // Import the new platform service
+import { AuthService } from '@auth0/auth0-angular';
+
+
 
 @Component({
   selector: 'app-root',

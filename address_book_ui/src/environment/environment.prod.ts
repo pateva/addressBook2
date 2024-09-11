@@ -5,4 +5,5 @@ export const environment = {
   auth0RedirectURL: '',
   auth0Audience: '',
   api: '',
+  ssrRedirectUri: ''
 };
