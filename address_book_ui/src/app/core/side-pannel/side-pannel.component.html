@@ -1,7 +1,14 @@
-<p-sidebar [(visible)]="sidebarVisible" >
-    <h3>Sidebar</h3>
-    <p>
-        Lorem ipsum dolor sit amet...
-    </p>
+<p-sidebar [(visible)]="sidebarVisible">
+  <div class="sidebar-content">
+    <div class="card flex justify-content-center">
+      <p-tree class="w-full md:w-30rem" [value]="files"></p-tree>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="card flex justify-content-center">
+      <p-button label="Add Contact" icon="pi pi-plus"></p-button>
+    </div>
+  </div>
 </p-sidebar>
 <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
