@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
-import { RecordComponent } from './record/record.component';
-import { TestComponent } from './test/test.component';
+import { RecordComponent } from './components/record/record.component';
 import {ROUTES} from '@constants/routes'
 import { AuthComponent } from './pages/auth/auth.component';
 
@@ -12,7 +11,7 @@ export const routes: Routes = [
     },
     {
         path: ROUTES.home,
-        component: TestComponent,
+        component: RecordComponent,
         title: "Home"
     },
     {

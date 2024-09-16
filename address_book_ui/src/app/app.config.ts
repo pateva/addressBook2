@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DatePipe } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   
@@ -36,7 +37,8 @@ export const appConfig: ApplicationConfig = {
         },
       }),
       BrowserModule,
-      BrowserAnimationsModule
+      BrowserAnimationsModule,
+      DatePipe
     ),
   ],
 };

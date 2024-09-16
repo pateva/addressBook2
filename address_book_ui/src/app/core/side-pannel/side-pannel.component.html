@@ -1,1 +1,18 @@
-<p>side-pannel works!</p>
+<p-sidebar [(visible)]="sidebarVisible" [showCloseIcon]="false">
+  <div class="custom-sidebar-header">
+    <h3 class="sidebar-title">Address Book</h3>
+  </div>
+    <div class="sidebar-content">
+        <div class="card flex justify-content-center">
+            <p-tree class="w-full md:w-30rem" [value]="files"></p-tree>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="card flex justify-content-center">
+            <p-button label="Add Contact" icon="pi pi-plus"></p-button>
+        </div>
+    </div>
+</p-sidebar>
+
+<p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />

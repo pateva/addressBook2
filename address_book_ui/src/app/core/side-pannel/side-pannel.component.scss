@@ -1,0 +1,43 @@
+:host {
+    ::ng-deep .p-sidebar {
+        width: 15rem;
+
+        .p-sidebar-header {
+            display: none; // Hide the auto-generated empty header
+        }
+
+        .sidebar-content {
+            flex-grow: 1;
+            overflow: auto;
+        }
+
+        .sidebar-footer {
+            flex-shrink: 0;
+            padding: 1rem;
+            bottom: 0;
+            position: fixed;
+            margin-bottom: 2rem;
+        }
+
+        .custom-sidebar-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            padding-left: 1.5;
+        }
+
+        ::ng-deep .p-button.p-button-icon-only {
+            width: 2rem;
+            padding: 0.5rem 0;
+        }
+
+        ::ng-deep .p-tree {
+            border: 0;
+            padding: 0;
+
+            .p-tree-toggler {
+                width: 1rem;
+            }
+        }
+    }
+}
