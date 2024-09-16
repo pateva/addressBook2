@@ -16,7 +16,7 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.loginWithRedirect();
+    this.login();
   }
 
   login() {
