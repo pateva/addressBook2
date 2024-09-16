@@ -19,4 +19,8 @@ export class AuthComponent implements OnInit {
     this.authService.loginWithRedirect();
   }
 
+  login() {
+    this.authService.loginWithRedirect();
+  }
+
 }
