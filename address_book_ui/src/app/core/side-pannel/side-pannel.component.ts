@@ -5,6 +5,7 @@ import { TreeModule } from 'primeng/tree';
 import { TreeNode } from 'primeng/api';
 import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
+import {ROUTES} from '@constants/routes'
 
 @Component({
   selector: 'app-side-pannel',
@@ -22,10 +23,8 @@ export class SidePannelComponent {
 
   logout() {
     this.auth.logout({
-      async openUrl(url) {
-        window.location.replace(
-          `${url}&returnTo=${window.location.origin}/login`
-        );
+      logoutParams: {
+        returnTo: document.location.origin + '/' + ROUTES.login, // Use the constant here
       },
     });
   }
