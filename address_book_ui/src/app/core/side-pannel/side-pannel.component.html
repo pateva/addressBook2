@@ -1,4 +1,4 @@
-<p-sidebar [(visible)]="sidebarVisible" [showCloseIcon]="false">
+<p-sidebar [(visible)]="sidebarVisible" [showCloseIcon]="false" [dismissible]="false">
   <div class="custom-sidebar-header">
     <h3 class="sidebar-title">Address Book</h3>
   </div>
@@ -14,5 +14,3 @@
         </div>
     </div>
 </p-sidebar>
-
-<p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
