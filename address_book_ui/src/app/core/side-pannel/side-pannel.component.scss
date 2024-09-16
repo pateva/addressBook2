@@ -17,6 +17,14 @@
             bottom: 0;
             position: fixed;
             margin-bottom: 2rem;
+
+            .card {
+                display: flex; 
+                flex-direction: column;      
+                // justify-content: center;     
+                align-items: center;         
+                gap: 0.5rem;   
+            }
         }
 
         .custom-sidebar-header {
