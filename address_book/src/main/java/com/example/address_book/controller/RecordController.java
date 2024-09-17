@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/user/{userId}/records")
 @RequiredArgsConstructor
@@ -105,7 +108,8 @@ public class RecordController {
     @DeleteMapping("{id}/label/{labelId}")
     public ResponseEntity<Void> removeLabelToRecord(@PathVariable final Long userId, @PathVariable final Long id, @PathVariable final Long labelId) {
         recordService.removeLabelFromRecord(id, labelId);
-
+Map<Integer, Integer> map = new HashMap<>();
+map.put(last(5), 3)
         return ResponseEntity.noContent().build();
     }
 

@@ -24,7 +24,7 @@ export class SidePannelComponent {
   logout() {
     this.auth.logout({
       logoutParams: {
-        returnTo: document.location.origin + '/' + ROUTES.login, // Use the constant here
+        returnTo: document.location.origin + '/' + ROUTES.login, 
       },
     });
   }
