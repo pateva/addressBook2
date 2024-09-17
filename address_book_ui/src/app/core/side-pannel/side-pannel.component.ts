@@ -32,17 +32,17 @@ export class SidePannelComponent {
   files: TreeNode[] = [
     {
       label: 'My Account',
-      icon: 'pi pi-user', // Icon for profile
+      icon: 'pi pi-user', 
       // Define an action or a command later for navigation or opening panels
     },
     {
       label: 'Contacts',
-      icon: 'pi pi-users',  // Icon for contacts
+      icon: 'pi pi-users', 
       // Define action for contacts here
     },
     {
       label: 'Labels',
-      icon: 'pi pi-tag', // Icon for labels
+      icon: 'pi pi-tag',
       // Define action for labels here
     }
   ];
