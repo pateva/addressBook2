@@ -1,14 +1,22 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { SidePannelComponent } from './core/side-pannel/side-pannel.component';
+import { AuthService } from '@auth0/auth0-angular';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponent],
+  imports: [RouterOutlet,
+    LoadingComponent,
+    SidePannelComponent,
+    NgIf,
+    AsyncPipe],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent{
+  constructor(public auth: AuthService) { }
   title = 'address_book_ui';
 }

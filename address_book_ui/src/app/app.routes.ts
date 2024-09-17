@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { RecordComponent } from './components/record/record.component';
 import {ROUTES} from '@constants/routes'
 import { AuthComponent } from './pages/auth/auth.component';
+import { AuthGuard } from '@auth0/auth0-angular';  // Import AuthGuard
+
 
 export const routes: Routes = [
     {
@@ -12,12 +14,14 @@ export const routes: Routes = [
     {
         path: ROUTES.home,
         component: RecordComponent,
-        title: "Home"
+        title: "Home",
+        canActivate: [AuthGuard]
     },
     {
         path: ROUTES.records,
         component: RecordComponent,
-        title: "Record"
+        title: "Record",
+        canActivate: [AuthGuard]
     },
     {
         path: ROUTES.wildcard,

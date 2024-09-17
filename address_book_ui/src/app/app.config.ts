@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
         domain: environment.auth0Domain,     
         clientId: environment.auth0Client, 
         authorizationParams: {
-          redirect_uri:  window.location.origin,
+          redirect_uri:  environment.ssrRedirectUri,
           audience: environment.auth0Audience, 
         },
         useRefreshTokens: false, 

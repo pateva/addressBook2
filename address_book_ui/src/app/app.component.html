@@ -1,2 +1,9 @@
-<app-home></app-home>
-<router-outlet></router-outlet>
+<div class="container" *ngIf="auth.isLoading$ | async; else loaded">
+    <app-loading></app-loading>
+</div>
+
+<ng-template #loaded>
+    <app-side-pannel>
+    </app-side-pannel>
+    <router-outlet></router-outlet>
+</ng-template>
