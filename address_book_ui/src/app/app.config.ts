@@ -21,6 +21,7 @@ export const appConfig: ApplicationConfig = {
         authorizationParams: {
           redirect_uri:  environment.ssrRedirectUri,
           audience: environment.auth0Audience, 
+          cacheLocation: 'localstorage'
         },
         useRefreshTokens: false, 
         httpInterceptor: {

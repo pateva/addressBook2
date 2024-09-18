@@ -1,9 +1,19 @@
+<!-- Show the loading spinner if the authentication status is being checked -->
 <div class="container" *ngIf="auth.isLoading$ | async; else loaded">
     <app-loading></app-loading>
-</div>
-
-<ng-template #loaded>
-    <app-side-pannel>
-    </app-side-pannel>
-    <router-outlet></router-outlet>
-</ng-template>
+  </div>
+  
+  <!-- Once the loading is finished, handle whether the user is authenticated -->
+  <ng-template #loaded>
+    <ng-container *ngIf="(auth.isAuthenticated$ | async) !== false; else redirectToLogin">
+      <!-- If the user is authenticated, show the side panel and router outlet -->
+      <app-side-pannel></app-side-pannel>
+      <router-outlet></router-outlet>
+    </ng-container>
+  
+    <!-- Redirect to login if the user is not authenticated -->
+    <ng-template #redirectToLogin>
+      <app-auth></app-auth>
+    </ng-template>
+  </ng-template>
+  
