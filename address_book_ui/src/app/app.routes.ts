@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { RecordComponent } from './components/record/record.component';
 import {ROUTES} from '@constants/routes'
 import { AuthComponent } from './pages/auth/auth.component';
-import { AuthGuard } from '@auth0/auth0-angular';  // Import AuthGuard
+import { AuthGuard } from '@auth0/auth0-angular';
 
 
 export const routes: Routes = [
