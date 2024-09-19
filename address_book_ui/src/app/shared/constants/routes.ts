@@ -1,6 +1,6 @@
 export const ROUTES = {
     home: '',
     login: 'login',
-    records: 'records',
+    contact: 'contact',
     wildcard: '**'
 }

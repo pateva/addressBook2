@@ -1,0 +1,23 @@
+.card {
+    width: 60%;
+    text-align: center; 
+    .header {
+        width: 60%;
+        height: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        margin: 0 auto;
+        // border: 1px solid red;  // Optional: border for visualization
+        padding-top:2%;
+
+        .header-image {
+            width: 50%;
+            height: 50%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
