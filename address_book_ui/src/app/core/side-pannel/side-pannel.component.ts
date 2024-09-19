@@ -17,18 +17,6 @@ import {ROUTES} from '@constants/routes'
 export class SidePannelComponent {
   sidebarVisible: boolean = true;
 
-  constructor(@Inject(DOCUMENT) public document: Document,
-    public auth: AuthService) {
-  }
-
-  logout() {
-    this.auth.logout({
-      logoutParams: {
-        returnTo: document.location.origin + '/' + ROUTES.login, 
-      },
-    });
-  }
-
   files: TreeNode[] = [
     {
       label: 'My Account',
@@ -47,4 +35,15 @@ export class SidePannelComponent {
     }
   ];
 
+  constructor(@Inject(DOCUMENT) public document: Document,
+    public auth: AuthService) {
+  }
+
+  logout() {
+    this.auth.logout({
+      logoutParams: {
+        returnTo: document.location.origin + '/' + ROUTES.login, 
+      },
+    });
+  }
 }
