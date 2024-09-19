@@ -1,8 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
-import { AuthModule } from '@auth0/auth0-angular';
-import { environment } from '@env/environment';
-import { HttpClient } from '@angular/common/http';
+import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';import { environment } from '@env/environment';
+import { HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { routes } from './app.routes';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,15 +11,17 @@ export const appConfig: ApplicationConfig = {
   
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withEnabledBlockingInitialNavigation()),    
+    provideRouter(routes, withEnabledBlockingInitialNavigation()),   
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true}, 
     importProvidersFrom(
       HttpClient,
       AuthModule.forRoot({
         domain: environment.auth0Domain,     
         clientId: environment.auth0Client, 
         authorizationParams: {
-          redirect_uri:  window.location.origin,
+          redirect_uri:  environment.ssrRedirectUri,
           audience: environment.auth0Audience, 
+          cacheLocation: 'localstorage'
         },
         useRefreshTokens: false, 
         httpInterceptor: {
