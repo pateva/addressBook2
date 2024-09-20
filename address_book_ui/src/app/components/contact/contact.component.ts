@@ -6,11 +6,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, AsyncPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { InputGroupModule } from 'primeng/inputgroup';
 import { ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ContactTableComponent } from '../contact-table/contact-table.component';
-
+import { AddressContactTableComponent } from '../address-contact-table/address-contact-table.component';
 
 @Component({
   selector: 'app-contact',
@@ -24,8 +23,8 @@ import { ContactTableComponent } from '../contact-table/contact-table.component'
     NgIf,
     AsyncPipe,
     TableModule,
-    InputGroupModule,
-    ContactTableComponent],
+    ContactTableComponent,
+    AddressContactTableComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
@@ -42,8 +41,8 @@ export class ContactComponent {
     { type: 'Email', value: 'john.doe@example.com', isDisabled$: new BehaviorSubject<boolean>(true) },
   ];
   address = [
-    { type: 'Phone Number', value: '+359876616112' },
-    { type: 'Email', value: 'john.doe@example.com' },
+    { type: 'Phone Number', value: '+359876616112', isDisabled$: new BehaviorSubject<boolean>(true)  },
+    { type: 'Email', value: 'john.doe@example.com', isDisabled$: new BehaviorSubject<boolean>(true)  },
   ];
   phoneDetails = [
     { type: 'Phone Number', value: '+359876616112', isDisabled$: new BehaviorSubject<boolean>(true) },

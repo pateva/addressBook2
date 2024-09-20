@@ -1,0 +1,21 @@
+.contact-info {
+    padding: 10px 0;
+
+    input {
+        width: 100%;
+    }
+
+    td {
+        border: none;
+        padding: 5px;
+    }
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: flex-end; 
+    // border: 1px solid red;
+    padding-right: 3%;
+    // opacity: 0;
+}

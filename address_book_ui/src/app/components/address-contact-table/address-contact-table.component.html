@@ -1,0 +1,34 @@
+<p-table class="contact-info" [value]="address.length > 0 ? address : [{}]">
+    <ng-template pTemplate="header">
+        <tr>
+            <td>Address</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-contact let-i="rowIndex">
+        <tr>
+            <td *ngIf="address.length > 0">
+                <p-inputGroup>
+                    <input id="disabled-input" type="text" pInputText [disabled]="(contact.isDisabled$ | async)"
+                        [(ngModel)]="contact.value" />
+
+                    <button *ngIf="(contact.isDisabled$ | async)" type="button" pButton icon="pi pi-pencil"
+                        severity="secondary" (click)="updateAddress(i)">
+                    </button>
+
+                    <button *ngIf="!(contact.isDisabled$ | async)" type="button" pButton icon="pi pi-check"
+                        severity="secondary" (click)="saveAddress(i)">
+                    </button>
+                </p-inputGroup>
+            </td>
+
+            <td *ngIf="address.length === 0">
+                <div>
+                    <input id="street-input" type="text" pInputText placeholder="Example Str 105" />
+                </div>
+                <div style="margin-top: 10px;">
+                    <input id="location-input" type="text" pInputText placeholder="City, Country" />
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
