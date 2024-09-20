@@ -21,7 +21,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-        
         }
 
         .overlay {
@@ -55,9 +54,39 @@
     .p-card-title {
         text-align: center;
     }
+}
 
-    .p-card-subtitle {
-        text-align: center;
+.contact-info {
+    padding: 10px 0;
+
+    input {
+        width: 100%;
     }
 
+    td {
+        border: none;
+        padding: 5px;
+    }
+
+    
+}
+
+.table-grid {
+    display: flex;
+    flex-wrap: wrap;  /* This allows the items to wrap into multiple rows */
+    gap: 20px;  /* Add some space between tables */
+    justify-content: space-between;  /* Distribute the tables evenly */
+}
+
+.table-item {
+    flex: 1 1 calc(50% - 20px);  /* Each table takes 50% of the container's width, minus some gap */
+    box-sizing: border-box;  /* Ensure padding and borders don't affect width */
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end; 
+    // border: 1px solid red;
+    padding-right: 3%;
+    // opacity: 0;
 }
