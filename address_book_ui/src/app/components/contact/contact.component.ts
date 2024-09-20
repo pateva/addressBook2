@@ -9,6 +9,7 @@ import { TableModule } from 'primeng/table';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ContactTableComponent } from '../contact-table/contact-table.component';
 
 
 @Component({
@@ -23,12 +24,13 @@ import { BehaviorSubject } from 'rxjs';
     NgIf,
     AsyncPipe,
     TableModule,
-    InputGroupModule],
+    InputGroupModule,
+    ContactTableComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent {
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) { }
 
   header: string = "First Name";
   subheader: string = "+12345678";
@@ -43,6 +45,11 @@ export class ContactComponent {
     { type: 'Phone Number', value: '+359876616112' },
     { type: 'Email', value: 'john.doe@example.com' },
   ];
+  phoneDetails = [
+    { type: 'Phone Number', value: '+359876616112', isDisabled$: new BehaviorSubject<boolean>(true) },
+    { type: 'Email', value: 'john.doe@example.com', isDisabled$: new BehaviorSubject<boolean>(true) },
+  ];
+
   isDisabled = true;
 
 
@@ -54,7 +61,7 @@ export class ContactComponent {
     this.contactDetails[index].isDisabled$.next(true);
     // this.cdr.detectChanges(); // Force change detection
   }
-  
+
   updateAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
     // this.cdr.detectChanges(); // Force change detection
