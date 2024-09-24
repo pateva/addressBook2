@@ -67,3 +67,7 @@
     flex: 1 1 calc(50% - 20px);  /* Each table takes 50% of the container's width, minus some gap */
     box-sizing: border-box;  /* Ensure padding and borders don't affect width */
 }
+
+.footer {
+    padding: 10px;
+}

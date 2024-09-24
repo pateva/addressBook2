@@ -1,14 +1,14 @@
-<p-table class="contact-info" [value]="address.length > 0 ? address : [{}]">
+<p-table class="contact-info" [value]="contactDetails.length > 0 ? contactDetails : [{}]">
     <ng-template pTemplate="header">
-        <tr>
-            <td>Address</td>
-        </tr>
+        <tr *ngFor="let contactItem of contactDetails">
+            <td>{{ contactItem.type }}</td>
+          </tr>
     </ng-template>
     <ng-template pTemplate="body" let-contact let-i="rowIndex">
         <tr>
-            <td *ngIf="address.length > 0">
+            <td *ngIf="contactDetails.length > 0">
                 <p-inputGroup>
-                    <input id="disabled-input" type="text" pInputText [disabled]="(contact.isDisabled$ | async)"
+                    <input id="disabled-input" type="text" pInputText [disabled]="(contact.isDisabled$ | async) ?? true"
                         [(ngModel)]="contact.value" />
 
                     <button *ngIf="(contact.isDisabled$ | async)" type="button" pButton icon="pi pi-pencil"
@@ -21,12 +21,12 @@
                 </p-inputGroup>
             </td>
 
-            <td *ngIf="address.length === 0">
+            <td *ngIf="contactDetails.length === 0">
                 <div>
-                    <input id="street-input" type="text" pInputText placeholder="Example Str 105" />
+                    <input id="street-input" type="text" pInputText [placeholder]="contact.placeholder[0] || 'Placeholder'" />
                 </div>
                 <div style="margin-top: 10px;">
-                    <input id="location-input" type="text" pInputText placeholder="City, Country" />
+                    <input id="location-input" type="text" pInputText [placeholder]="contact.placeholder[1] || 'Placeholder'"/>
                 </div>
             </td>
         </tr>

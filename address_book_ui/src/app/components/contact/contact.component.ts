@@ -9,7 +9,7 @@ import { TableModule } from 'primeng/table';
 import { ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ContactTableComponent } from '../contact-table/contact-table.component';
-import { AddressContactTableComponent } from '../address-contact-table/address-contact-table.component';
+import { ContactBlockComponent } from '../contact-block/contact-block.component';
 
 @Component({
   selector: 'app-contact',
@@ -24,7 +24,7 @@ import { AddressContactTableComponent } from '../address-contact-table/address-c
     AsyncPipe,
     TableModule,
     ContactTableComponent,
-    AddressContactTableComponent],
+    ContactBlockComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
@@ -37,16 +37,29 @@ export class ContactComponent {
   location: string = '';  // To store location
 
   contactDetails = [
-    { type: 'Phone Number', value: '+359876616112', isDisabled$: new BehaviorSubject<boolean>(true) },
-    { type: 'Email', value: 'john.doe@example.com', isDisabled$: new BehaviorSubject<boolean>(true) },
+    { type: 'Email', 
+      value: 'john.doe@example.com', 
+      isDisabled$: new BehaviorSubject<boolean>(true),
+      placeholders: ["gmail.com"]
+     },
   ];
   address = [
-    { type: 'Phone Number', value: '+359876616112', isDisabled$: new BehaviorSubject<boolean>(true)  },
-    { type: 'Email', value: 'john.doe@example.com', isDisabled$: new BehaviorSubject<boolean>(true)  },
+    { type: 'Address', 
+      value: '+359876616112', 
+      isDisabled$: new BehaviorSubject<boolean>(true),
+      placeholders: ["gmail.com"]  },
   ];
   phoneDetails = [
-    { type: 'Phone Number', value: '+359876616112', isDisabled$: new BehaviorSubject<boolean>(true) },
-    { type: 'Email', value: 'john.doe@example.com', isDisabled$: new BehaviorSubject<boolean>(true) },
+    { type: 'Phone Number', 
+      value: '+359876616112', 
+      isDisabled$: new BehaviorSubject<boolean>(true),
+      placeholders: ["gmail.com"] },
+  ];
+  faxDetails = [
+    { type: 'Phone Number', 
+      value: '+359876616112', 
+      isDisabled$: new BehaviorSubject<boolean>(true),
+      placeholders: ["gmail.com"] },
   ];
 
   isDisabled = true;

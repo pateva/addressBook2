@@ -8,7 +8,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
-  selector: 'app-address-contact-table',
+  selector: 'app-contact-block',
   standalone: true,
   imports: [TableModule,
     InputTextModule,
@@ -18,20 +18,25 @@ import { BehaviorSubject } from 'rxjs';
     AsyncPipe,
     FormsModule,
     InputGroupModule],
-  templateUrl: './address-contact-table.component.html',
-  styleUrl: './address-contact-table.component.scss'
+  templateUrl: './contact-block.component.html',
+  styleUrl: './contact-block.component.scss'
 })
-export class AddressContactTableComponent {
-  @Input() address: { type: string, value: string, isDisabled$: BehaviorSubject<boolean> }[] = [];
+export class ContactBlockComponent {
+  @Input() contactDetails: {
+    type: string,
+    value: string,
+    isDisabled$: BehaviorSubject<boolean>,
+    placeholders: string[]
+  }[] = [];
 
   // Method to enable the specific address input
   updateAddress(index: number) {
-    this.address[index].isDisabled$.next(false);
+    this.contactDetails[index].isDisabled$.next(false);
   }
 
   // Method to save and disable the specific address input
   saveAddress(index: number) {
-    this.address[index].isDisabled$.next(true);
+    this.contactDetails[index].isDisabled$.next(true);
   }
 
 }

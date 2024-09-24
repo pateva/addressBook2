@@ -17,25 +17,24 @@
         </ng-template>
         <div class="table-grid">
             <div class="table-item">
-                <app-address-contact-table [address]="address"></app-address-contact-table>
+                <app-contact-block [contactDetails]="address"></app-contact-block>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="phoneDetails" [headerTitle]="'Phone Number'" [isDisabled]="isDisabled"></app-contact-table>
+                <app-contact-table [contactDetails]="phoneDetails"></app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="contactDetails" [headerTitle]="'Email'" [isDisabled]="isDisabled"></app-contact-table>
+                <app-contact-table [contactDetails]="contactDetails"></app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="contactDetails" [headerTitle]="'Fax'" [isDisabled]="isDisabled"></app-contact-table>
+                <app-contact-table [contactDetails]="faxDetails"></app-contact-table>
             </div>
 
         </div>
 
-        <ng-template pTemplate="footer">
-            <div class="flex gap-3 mt-1">
-                <p-button label="Update" severity="secondary" class="w-full" styleClass="w-full" />
+        <!-- <ng-template pTemplate="footer">
+            <div class="footer">
                 <p-button label="Save" class="w-full" styleClass="w-full" />
             </div>
-        </ng-template>
+        </ng-template> -->
     </p-card>
 </div>
