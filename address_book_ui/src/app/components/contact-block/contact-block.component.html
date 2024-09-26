@@ -2,7 +2,7 @@
     <ng-template pTemplate="header">
         <tr *ngFor="let contactItem of contactDetails">
             <td>{{ contactItem.type }}</td>
-          </tr>
+        </tr>
     </ng-template>
     <ng-template pTemplate="body" let-contact let-i="rowIndex">
         <tr>
@@ -23,10 +23,12 @@
 
             <td *ngIf="contactDetails.length === 0">
                 <div>
-                    <input id="street-input" type="text" pInputText [placeholder]="contact.placeholder[0] || 'Placeholder'" />
+                    <input id="street-input" type="text" pInputText
+                        [placeholder]="contact.placeholder[0] || 'Placeholder'" />
                 </div>
                 <div style="margin-top: 10px;">
-                    <input id="location-input" type="text" pInputText [placeholder]="contact.placeholder[1] || 'Placeholder'"/>
+                    <input id="location-input" type="text" pInputText
+                        [placeholder]="contact.placeholder[1] || 'Placeholder'" />
                 </div>
             </td>
         </tr>

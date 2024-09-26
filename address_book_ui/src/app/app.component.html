@@ -7,7 +7,7 @@
   <ng-template #loaded>
     <ng-container *ngIf="(auth.isAuthenticated$ | async) !== false; else redirectToLogin">
       <!-- If the user is authenticated, show the side panel and router outlet -->
-      <!-- <app-side-pannel></app-side-pannel> -->
+      <app-side-pannel></app-side-pannel>
       <router-outlet></router-outlet>
     </ng-container>
   

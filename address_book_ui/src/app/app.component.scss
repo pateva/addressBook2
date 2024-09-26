@@ -1,0 +1,10 @@
+:host {
+    display: flex;
+    height: 100vh; 
+  
+    app-side-pannel {
+      width: 15rem; 
+      flex-shrink: 0; 
+    }  
+  }
+  

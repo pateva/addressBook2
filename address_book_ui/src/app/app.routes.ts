@@ -3,6 +3,7 @@ import {ROUTES} from '@constants/routes'
 import { AuthComponent } from './pages/auth/auth.component';
 import { AuthGuard } from '@auth0/auth0-angular';
 import { ContactComponent } from './components/contact/contact.component';
+import { PersonalPageComponent } from './pages/personal-page/personal-page.component';
 
 export const routes: Routes = [
     {
@@ -13,7 +14,7 @@ export const routes: Routes = [
     {
         //TODO should forward to personal contact page
         path: ROUTES.home,
-        component: ContactComponent,
+        component: PersonalPageComponent,
         title: "Home",
         canActivate: [AuthGuard]
     },
