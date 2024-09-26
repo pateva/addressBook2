@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @PostMapping
-    public ResponseEntity<?> createUser() {
-        userService.createUser();
 
-        return ResponseEntity.accepted().build();
+    @PostMapping
+    public ResponseEntity<UserDto> createUser() {
+
+        return ResponseEntity.ok(userService.createUser());
     }
 
     @GetMapping

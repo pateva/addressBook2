@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { BadgeModule } from 'primeng/badge';
@@ -11,6 +11,8 @@ import { BehaviorSubject } from 'rxjs';
 import { ContactTableComponent } from '../contact-table/contact-table.component';
 import { ContactBlockComponent } from '../contact-block/contact-block.component';
 import { TagModule } from 'primeng/tag';
+import { UsersService } from '@app/services/data/users.service';
+import { UserResponse } from '@app/interfaces/UserResponse';
 
 @Component({
   selector: 'app-contact',
@@ -30,9 +32,24 @@ import { TagModule } from 'primeng/tag';
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
-export class ContactComponent {
-  constructor(private cdr: ChangeDetectorRef) { }
+export class ContactComponent implements OnInit {
+  constructor(private cdr: ChangeDetectorRef,
+    private userService: UsersService
+  ) { }
 
+  ngOnInit(): void {
+    this.userService.getUserDetails().subscribe({
+      next: (user: UserResponse) => {
+        this.user = user;
+        console.log('User Details: ', this.user);
+      },
+      error: (err) => {
+        console.error('Error: ', err);
+      }
+    })
+  }
+
+  user: UserResponse | null = null;
   name: string = "First Name";
   subheader: string = "+12345678";
   streetAddress: string = '';  // To store street/precise address

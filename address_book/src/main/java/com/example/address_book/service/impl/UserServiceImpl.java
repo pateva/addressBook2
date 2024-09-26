@@ -3,6 +3,7 @@ package com.example.address_book.service.impl;
 import com.example.address_book.auth.CustomUserPrincipal;;
 import com.example.address_book.dto.UserDto;
 import com.example.address_book.exception.AuthenticationException;
+import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.mapper.UserMapper;
 import com.example.address_book.model.User;
 import com.example.address_book.repository.UserRepository;
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public void createUser() {
+    public UserDto createUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
@@ -32,12 +33,15 @@ public class UserServiceImpl implements UserService {
             }
 
             if (userRepository.existsByEmail(customUserPrincipal.getEmail())) {
-                return;
+                throw new EntityAlreadyExistsException("User already exists! Something is not ok");
             }
 
             var user = User.builder().email(customUserPrincipal.getEmail()).build();
-            userRepository.save(user);
+
+            return userMapper.mapEntityToDto(userRepository.save(user));
         }
+
+        throw new RuntimeException("Something is not ok");
     }
 
     @Override

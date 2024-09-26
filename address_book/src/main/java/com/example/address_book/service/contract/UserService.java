@@ -6,7 +6,7 @@ import com.example.address_book.model.User;
 import java.util.Optional;
 
 public interface UserService {
-    void createUser();
+    UserDto createUser();
 
     UserDto getCurrentUser();
 
