@@ -10,6 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ContactTableComponent } from '../contact-table/contact-table.component';
 import { ContactBlockComponent } from '../contact-block/contact-block.component';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-contact',
@@ -24,42 +25,50 @@ import { ContactBlockComponent } from '../contact-block/contact-block.component'
     AsyncPipe,
     TableModule,
     ContactTableComponent,
-    ContactBlockComponent],
+    ContactBlockComponent,
+    TagModule],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent {
   constructor(private cdr: ChangeDetectorRef) { }
 
-  header: string = "First Name";
+  name: string = "First Name";
   subheader: string = "+12345678";
   streetAddress: string = '';  // To store street/precise address
   location: string = '';  // To store location
 
   contactDetails = [
-    { type: 'Email', 
-      value: 'john.doe@example.com', 
+    {
+      type: 'Email',
+      value: 'john.doe@example.com',
       isDisabled$: new BehaviorSubject<boolean>(true),
       placeholders: ["gmail.com"]
-     },
+    },
   ];
   address = [
-    { type: 'Address', 
-      value: '+359876616112', 
+    {
+      type: 'Address',
+      value: '+359876616112',
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"]  },
+      placeholders: ["gmail.com"]
+    },
   ];
   phoneDetails = [
-    { type: 'Phone Number', 
-      value: '+359876616112', 
+    {
+      type: 'Phone Number',
+      value: '+359876616112',
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"] },
+      placeholders: ["gmail.com"]
+    },
   ];
   faxDetails = [
-    { type: 'Phone Number', 
-      value: '+359876616112', 
+    {
+      type: 'Phone Number',
+      value: '+359876616112',
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"] },
+      placeholders: ["gmail.com"]
+    },
   ];
 
   isDisabled = true;

@@ -7,8 +7,8 @@
 
     .image-container {
         position: relative;
-        width: 40%;
-        height: 50%;
+        width: 30%;
+        height: 300%;
         border-radius: 50%;
         overflow: hidden;
         // border: 1px solid red;
@@ -58,16 +58,24 @@
 
 .table-grid {
     display: flex;
-    flex-wrap: wrap;  /* This allows the items to wrap into multiple rows */
-    gap: 20px;  /* Add some space between tables */
-    justify-content: space-between;  /* Distribute the tables evenly */
+    flex-wrap: wrap;  
+    gap: 20px; 
+    justify-content: space-between;  
 }
 
 .table-item {
-    flex: 1 1 calc(50% - 20px);  /* Each table takes 50% of the container's width, minus some gap */
-    box-sizing: border-box;  /* Ensure padding and borders don't affect width */
+    flex: 1 1 calc(50% - 20px);  
+    box-sizing: border-box; 
 }
 
 .footer {
     padding: 10px;
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    height: auto; /* Let the card grow based on its content */
+    max-height: max-content;
 }
