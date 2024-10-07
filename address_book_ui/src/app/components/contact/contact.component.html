@@ -1,0 +1,37 @@
+<div class="card flex justify-content-center">
+    <p-card [header]="name" class="card">
+        <ng-template pTemplate="header">
+            <div class="header">
+                <div class="image-container">
+                    <img alt="Profile Picture"
+                        src="https://lumiere-a.akamaihd.net/v1/images/a_avatarpandorapedia_jakesully_16x9_1098_02_b13c4171.jpeg?region=340%2C0%2C1081%2C1081"
+                        class="header-image" />
+                    <div class="overlay">
+                        <i class="pi pi-pencil edit-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <div class="table-grid">
+            <div class="table-item">
+                <app-contact-block [contactDetails]="address"></app-contact-block>
+            </div>
+            <div class="table-item">
+                <app-contact-table [contactDetails]="phoneDetails"></app-contact-table>
+            </div>
+            <div class="table-item">
+                <app-contact-table [contactDetails]="contactDetails"></app-contact-table>
+            </div>
+            <div class="table-item">
+                <app-contact-table [contactDetails]="faxDetails"></app-contact-table>
+            </div>
+
+        </div>
+
+        <!-- <ng-template pTemplate="footer">
+            <div class="footer">
+                <p-button label="Save" class="w-full" styleClass="w-full" />
+            </div>
+        </ng-template> -->
+    </p-card>
+</div>

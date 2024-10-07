@@ -20,10 +20,9 @@ export const appConfig: ApplicationConfig = {
         clientId: environment.auth0Client, 
         authorizationParams: {
           redirect_uri:  environment.ssrRedirectUri,
-          audience: environment.auth0Audience, 
-          cacheLocation: 'localstorage'
+          audience: environment.auth0Audience
         },
-        useRefreshTokens: false, 
+        useRefreshTokens: true, 
         httpInterceptor: {
           allowedList: [
             {

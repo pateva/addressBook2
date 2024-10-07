@@ -108,8 +108,6 @@ public class RecordController {
     @DeleteMapping("{id}/label/{labelId}")
     public ResponseEntity<Void> removeLabelToRecord(@PathVariable final Long userId, @PathVariable final Long id, @PathVariable final Long labelId) {
         recordService.removeLabelFromRecord(id, labelId);
-Map<Integer, Integer> map = new HashMap<>();
-map.put(last(5), 3)
         return ResponseEntity.noContent().build();
     }
 
