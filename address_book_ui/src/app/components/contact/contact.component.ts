@@ -13,6 +13,7 @@ import { ContactBlockComponent } from '../contact-block/contact-block.component'
 import { TagModule } from 'primeng/tag';
 import { UsersService } from '@app/services/data/users.service';
 import { UserResponse } from '@app/interfaces/UserResponse';
+import { ContactResponse } from '@app/interfaces/ContactResponse';
 
 @Component({
   selector: 'app-contact',
@@ -106,15 +107,14 @@ export class ContactComponent implements OnInit {
   }
 
   populateUserDetails(user: UserResponse): void {
-    // Update the UI fields with the user details
-    this.name ='Unknown User';
-    this.subheader =  '+12345678';  // Default if contactNumber is missing
-    this.streetAddress =  '';
-    
-    // Update contact details
+    let personalRecord: ContactResponse | undefined = user.records.find(record => record.personal === true);
+    console.log(personalRecord);
+    this.name = personalRecord 
+    ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
+    : 'Unknown User';    
     this.contactDetails[0].value = user.email ?? 'no-email@example.com';
-    // this.address[0].value = user.address?.street ?? 'Unknown Street';
-    // this.phoneDetails[0].value = user.contactNumber ?? 'Unknown Phone';
+    this.address[0].value = personalRecord ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}` : 'Unknown Street';
+    this.phoneDetails[0].value = personalRecord ? `${personalRecord.userId}` : 'Unknown Phone';
     // this.faxDetails[0].value = user.faxNumber ?? 'Unknown Fax';
     
     // Manually trigger change detection if necessary
