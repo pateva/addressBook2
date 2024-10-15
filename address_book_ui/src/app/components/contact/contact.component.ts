@@ -41,7 +41,6 @@ export class ContactComponent implements OnInit {
     this.userService.getUserDetails().subscribe({
       next: (user: UserResponse) => {
         this.user = user;
-        console.log('User Details: ', this.user);
       },
       error: (err) => {
         console.error('Error: ', err);

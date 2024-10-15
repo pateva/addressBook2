@@ -22,12 +22,11 @@ export class UsersService {
                     const headers = new HttpHeaders({
                         Authorization: `Bearer ${token}`,
                     });
-
-                    // TODO not yet working when the user does  not exist
+                    console.log(`Bearer ${token}`);
                     return this.http.get<UserResponse>(this.path, { headers }).pipe(
                         switchMap((response: UserResponse) => {
-                            // If the user ID is null, call createUser
-                            if (!response || response.id === null) {
+                            console.log(response);
+                            if (response === null || response.id === null) {
                                 return this.createUser(); 
                             } 
                                 
@@ -53,16 +52,19 @@ export class UsersService {
     }
 
     createUser(): Observable<UserResponse> {
+        console.log("create user")
         return new Observable(observer => {
             this.auth.idTokenClaims$.subscribe(idTokenClaims => {
                 const token = idTokenClaims?.__raw;
                 const headers = new HttpHeaders(
                     {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json' 
                     }
                 );
 
-                this.http.post<UserResponse>(this.path, { headers })
+                const body = {}; 
+                this.http.post<UserResponse>(this.path, body, { headers })
                     .subscribe(
                         {
                             next: (response) => {
