@@ -41,6 +41,7 @@ export class ContactComponent implements OnInit {
     this.userService.getUserDetails().subscribe({
       next: (user: UserResponse) => {
         this.user = user;
+        this.populateUserDetails(user);  
       },
       error: (err) => {
         console.error('Error: ', err);
@@ -67,7 +68,7 @@ export class ContactComponent implements OnInit {
       type: 'Address',
       value: '+359876616112',
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"]
+      placeholders: ["Street Address"]
     },
   ];
   phoneDetails = [
@@ -75,7 +76,7 @@ export class ContactComponent implements OnInit {
       type: 'Phone Number',
       value: '+359876616112',
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"]
+      placeholders: ["Phone Number"]
     },
   ];
   faxDetails = [
@@ -83,7 +84,7 @@ export class ContactComponent implements OnInit {
       type: 'Phone Number',
       value: '+359876616112',
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"]
+      placeholders: ["Fax"]
     },
   ];
 
@@ -102,5 +103,21 @@ export class ContactComponent implements OnInit {
   updateAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
     // this.cdr.detectChanges(); // Force change detection
+  }
+
+  populateUserDetails(user: UserResponse): void {
+    // Update the UI fields with the user details
+    this.name ='Unknown User';
+    this.subheader =  '+12345678';  // Default if contactNumber is missing
+    this.streetAddress =  '';
+    
+    // Update contact details
+    this.contactDetails[0].value = user.email ?? 'no-email@example.com';
+    // this.address[0].value = user.address?.street ?? 'Unknown Street';
+    // this.phoneDetails[0].value = user.contactNumber ?? 'Unknown Phone';
+    // this.faxDetails[0].value = user.faxNumber ?? 'Unknown Fax';
+    
+    // Manually trigger change detection if necessary
+    this.cdr.detectChanges();
   }
 }
