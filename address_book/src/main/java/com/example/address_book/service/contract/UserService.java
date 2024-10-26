@@ -1,6 +1,7 @@
 package com.example.address_book.service.contract;
 
 import com.example.address_book.dto.UserDto;
+import com.example.address_book.dto.UserPartialDto;
 import com.example.address_book.model.User;
 
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 public interface UserService {
     UserDto createUser();
 
-    UserDto getCurrentUser();
+    UserPartialDto getCurrentUser();
 
     void validateUser(Long userId);
 

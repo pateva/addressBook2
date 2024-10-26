@@ -8,8 +8,8 @@
         <tr>
             <td *ngIf="contactDetails.length > 0">
                 <p-inputGroup>
-                    <input id="disabled-input" type="text" pInputText [disabled]="(contact.isDisabled$ | async) ?? true"
-                        [(ngModel)]="contact.value" />
+                    <textarea id="disabled-input" type="text" pInputText [disabled]="(contact.isDisabled$ | async) ?? true"
+                        [(ngModel)]="contact.value"></textarea>
 
                     <button *ngIf="(contact.isDisabled$ | async)" type="button" pButton icon="pi pi-pencil"
                         severity="secondary" (click)="updateAddress(i)">

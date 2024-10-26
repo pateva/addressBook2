@@ -7,7 +7,6 @@ export interface ContactResponse {
     lastName: string,
     firmName: string,
     address: AddressResponse,
-    userId: BigInteger,
     personal: Boolean,
     imageUrl: string,
     contactDetails: ContactDetailResponse[]

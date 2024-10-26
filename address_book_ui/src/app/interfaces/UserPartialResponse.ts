@@ -1,7 +1,7 @@
 import { ContactResponse } from "./ContactResponse"
 
-export interface UserResponse {
+export interface UserPartialResponse {
     id: BigInteger,
     email: string
-    records: ContactResponse[]
+    personalRecords: ContactResponse[]
 }

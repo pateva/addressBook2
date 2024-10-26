@@ -12,8 +12,9 @@ import { ContactTableComponent } from '../contact-table/contact-table.component'
 import { ContactBlockComponent } from '../contact-block/contact-block.component';
 import { TagModule } from 'primeng/tag';
 import { UsersService } from '@app/services/data/users.service';
-import { UserResponse } from '@app/interfaces/UserResponse';
+import { UserPartialResponse } from '@app/interfaces/UserPartialResponse';
 import { ContactResponse } from '@app/interfaces/ContactResponse';
+import { ContactType } from '@app/shared/util/contactType';
 
 @Component({
   selector: 'app-contact',
@@ -40,7 +41,7 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUserDetails().subscribe({
-      next: (user: UserResponse) => {
+      next: (user: UserPartialResponse) => {
         this.user = user;
         this.populateUserDetails(user);  
       },
@@ -50,7 +51,7 @@ export class ContactComponent implements OnInit {
     })
   }
 
-  user: UserResponse | null = null;
+  user: UserPartialResponse | null = null;
   name: string = "First Name";
   subheader: string = "+12345678";
   streetAddress: string = '';  // To store street/precise address
@@ -106,16 +107,19 @@ export class ContactComponent implements OnInit {
     // this.cdr.detectChanges(); // Force change detection
   }
 
-  populateUserDetails(user: UserResponse): void {
-    let personalRecord: ContactResponse | undefined = user.records.find(record => record.personal === true);
-    console.log(personalRecord);
+  populateUserDetails(user: UserPartialResponse): void {
+    let personalRecord: ContactResponse | undefined = user.personalRecords.find(record => record.personal === true);
+    const phoneDetail = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.PHONE_NUMBER);
+    const faxDetails = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.FAX);
     this.name = personalRecord 
     ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
     : 'Unknown User';    
     this.contactDetails[0].value = user.email ?? 'no-email@example.com';
-    this.address[0].value = personalRecord ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}` : 'Unknown Street';
-    this.phoneDetails[0].value = personalRecord ? `${personalRecord.userId}` : 'Unknown Phone';
-    // this.faxDetails[0].value = user.faxNumber ?? 'Unknown Fax';
+    this.address[0].value = personalRecord 
+    ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}` 
+    : 'Unknown Street';
+    this.phoneDetails[0].value = phoneDetail ? phoneDetail.value.toString() : "Unknown Phone";
+    this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : "Unknown Fax";
     
     // Manually trigger change detection if necessary
     this.cdr.detectChanges();

@@ -1,6 +1,8 @@
+import { ContactType } from "@app/shared/util/contactType";
+
 export interface ContactDetailResponse {
     id: BigInteger,
     recordId: BigInteger,
-    contactDetailType: Number, //TODO CHANGE,
-    contactDetailValue: Number
+    type: ContactType, 
+    value: Number
 }

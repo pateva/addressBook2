@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserResponse } from '@app/interfaces/UserResponse';
+import { UserPartialResponse } from '@app/interfaces/UserPartialResponse';
 import { BASE_BATH } from '@app/shared/constants/data';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable, of, switchMap } from 'rxjs';
@@ -14,7 +14,7 @@ export class UsersService {
 
     constructor(private http: HttpClient, private auth: AuthService) { }
 
-    getUserDetails(): Observable<UserResponse> {
+    getUserDetails(): Observable<UserPartialResponse> {
         return new Observable((observer) => {
             this.auth.idTokenClaims$.pipe(
                 switchMap((idTokenClaims) => {
@@ -23,8 +23,8 @@ export class UsersService {
                         Authorization: `Bearer ${token}`,
                     });
                     console.log(`Bearer ${token}`);
-                    return this.http.get<UserResponse>(this.path, { headers }).pipe(
-                        switchMap((response: UserResponse) => {
+                    return this.http.get<UserPartialResponse>(this.path, { headers }).pipe(
+                        switchMap((response: UserPartialResponse) => {
                             console.log(response);
                             if (response === null || response.id === null) {
                                 return this.createUser(); 
@@ -51,7 +51,7 @@ export class UsersService {
         return this.userId;
     }
 
-    createUser(): Observable<UserResponse> {
+    createUser(): Observable<UserPartialResponse> {
         console.log("create user")
         return new Observable(observer => {
             this.auth.idTokenClaims$.subscribe(idTokenClaims => {
@@ -64,7 +64,7 @@ export class UsersService {
                 );
 
                 const body = {}; 
-                this.http.post<UserResponse>(this.path, body, { headers })
+                this.http.post<UserPartialResponse>(this.path, body, { headers })
                     .subscribe(
                         {
                             next: (response) => {
