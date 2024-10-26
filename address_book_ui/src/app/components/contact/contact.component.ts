@@ -15,6 +15,7 @@ import { UsersService } from '@app/services/data/users.service';
 import { UserPartialResponse } from '@app/interfaces/UserPartialResponse';
 import { ContactResponse } from '@app/interfaces/ContactResponse';
 import { ContactType } from '@app/shared/util/contactType';
+import { ADD_ADDRESS, ADD_EMAIL, ADD_FAX, ADD_PHONE } from '@app/shared/constants/general';
 
 @Component({
   selector: 'app-contact',
@@ -52,15 +53,12 @@ export class ContactComponent implements OnInit {
   }
 
   user: UserPartialResponse | null = null;
-  name: string = "First Name";
-  subheader: string = "+12345678";
-  streetAddress: string = '';  // To store street/precise address
-  location: string = '';  // To store location
+  name: string = "Unknown User";
 
   contactDetails = [
     {
       type: 'Email',
-      value: 'john.doe@example.com',
+      value: ADD_EMAIL,
       isDisabled$: new BehaviorSubject<boolean>(true),
       placeholders: ["gmail.com"]
     },
@@ -68,7 +66,7 @@ export class ContactComponent implements OnInit {
   address = [
     {
       type: 'Address',
-      value: '+359876616112',
+      value: ADD_ADDRESS,
       isDisabled$: new BehaviorSubject<boolean>(true),
       placeholders: ["Street Address"]
     },
@@ -76,15 +74,15 @@ export class ContactComponent implements OnInit {
   phoneDetails = [
     {
       type: 'Phone Number',
-      value: '+359876616112',
+      value: ADD_PHONE,
       isDisabled$: new BehaviorSubject<boolean>(true),
       placeholders: ["Phone Number"]
     },
   ];
   faxDetails = [
     {
-      type: 'Phone Number',
-      value: '+359876616112',
+      type: 'Fax Details',
+      value: ADD_FAX,
       isDisabled$: new BehaviorSubject<boolean>(true),
       placeholders: ["Fax"]
     },
@@ -99,29 +97,26 @@ export class ContactComponent implements OnInit {
 
   saveAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
-    // this.cdr.detectChanges(); // Force change detection
   }
 
   updateAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
-    // this.cdr.detectChanges(); // Force change detection
   }
 
   populateUserDetails(user: UserPartialResponse): void {
-    let personalRecord: ContactResponse | undefined = user.personalRecords.find(record => record.personal === true);
+    let personalRecord: ContactResponse | undefined = user.personalRecords?.find(record => record.personal === true);
     const phoneDetail = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.PHONE_NUMBER);
     const faxDetails = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.FAX);
     this.name = personalRecord 
     ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
     : 'Unknown User';    
-    this.contactDetails[0].value = user.email ?? 'no-email@example.com';
+    this.contactDetails[0].value = user?.email ? user.email : ADD_EMAIL;
     this.address[0].value = personalRecord 
     ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}` 
-    : 'Unknown Street';
-    this.phoneDetails[0].value = phoneDetail ? phoneDetail.value.toString() : "Unknown Phone";
-    this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : "Unknown Fax";
-    
-    // Manually trigger change detection if necessary
-    this.cdr.detectChanges();
+    : ADD_ADDRESS;
+    this.phoneDetails[0].value = phoneDetail ? phoneDetail.value.toString() : ADD_PHONE;
+    this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
+  
+    //TODO changedetection ?
   }
 }

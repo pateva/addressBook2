@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto createUser() {
+    public UserPartialDto createUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
             var user = User.builder().email(customUserPrincipal.getEmail()).build();
 
-            return userMapper.mapEntityToDto(userRepository.save(user));
+            return userMapper.mapEntityToPartialDto(userRepository.save(user));
         }
 
         throw new RuntimeException("Something is not ok");
