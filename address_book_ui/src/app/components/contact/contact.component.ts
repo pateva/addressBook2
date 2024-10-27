@@ -12,10 +12,12 @@ import { ContactTableComponent } from '../contact-table/contact-table.component'
 import { ContactBlockComponent } from '../contact-block/contact-block.component';
 import { TagModule } from 'primeng/tag';
 import { UsersService } from '@app/services/data/users.service';
-import { UserPartialResponse } from '@app/interfaces/UserPartialResponse';
-import { ContactResponse } from '@app/interfaces/ContactResponse';
+import { UserPartialResponse } from '@app/interfaces/responses/UserPartialResponse';
+import { ContactResponse } from '@app/interfaces/responses/ContactResponse';
+import { CreateRecordBody } from '@app/interfaces/payloads/CreateRecordBody';
 import { ContactType } from '@app/shared/util/contactType';
 import { ADD_ADDRESS, ADD_EMAIL, ADD_FAX, ADD_PHONE } from '@app/shared/constants/general';
+import { RecordService } from '@app/services/data/record.service';
 
 @Component({
   selector: 'app-contact',
@@ -37,14 +39,15 @@ import { ADD_ADDRESS, ADD_EMAIL, ADD_FAX, ADD_PHONE } from '@app/shared/constant
 })
 export class ContactComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef,
-    private userService: UsersService
+    private userService: UsersService,
+    private recordService: RecordService
   ) { }
 
   ngOnInit(): void {
     this.userService.getUserDetails().subscribe({
       next: (user: UserPartialResponse) => {
         this.user = user;
-        this.populateUserDetails(user);  
+        this.populateUserDetails(user);
       },
       error: (err) => {
         console.error('Error: ', err);
@@ -107,16 +110,52 @@ export class ContactComponent implements OnInit {
     let personalRecord: ContactResponse | undefined = user.personalRecords?.find(record => record.personal === true);
     const phoneDetail = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.PHONE_NUMBER);
     const faxDetails = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.FAX);
-    this.name = personalRecord 
-    ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
-    : 'Unknown User';    
+    this.name = personalRecord
+      ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
+      : 'Unknown User';
     this.contactDetails[0].value = user?.email ? user.email : ADD_EMAIL;
-    this.address[0].value = personalRecord 
-    ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}` 
-    : ADD_ADDRESS;
+    this.address[0].value = personalRecord
+      ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}`
+      : ADD_ADDRESS;
     this.phoneDetails[0].value = phoneDetail ? phoneDetail.value.toString() : ADD_PHONE;
     this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
-  
+
     //TODO changedetection ?
+  }
+
+  createUpdateRecord(updateData: { index: number, value: string }) {
+    console.log("Emitting updateContactDetail:", updateData);
+
+    if (this.user?.personalRecords.length === 0) {
+      console.log("create record")
+      //create
+      const body: CreateRecordBody = {
+        userId: BigInt(new TextDecoder().decode(this.user.id)),
+        isPersonal: true,
+        firstName: '',
+        lastName: '',
+        imageUrl: '',
+        address: {
+          street: '',
+          city: '',
+          country: '',
+          recordId: null ,
+        },
+        contactDetails: [
+          {
+            recordId: null,
+            contactType: this.contactDetails[updateData.index].type,
+            value: updateData.value
+          }
+        ]
+      }
+
+      this.recordService.createRecord(body);
+      //return so that no else clause is used
+    } else {
+
+    }
+
+    //update
   }
 }

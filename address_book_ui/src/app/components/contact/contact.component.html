@@ -14,18 +14,21 @@
         </ng-template>
         <div class="table-grid">
             <div class="table-item">
-                <app-contact-block [contactDetails]="address"></app-contact-block>
+                <app-contact-block [contactDetails]="address" (updateContactDetail)="createUpdateRecord($event)">
+                </app-contact-block>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="phoneDetails"></app-contact-table>
+                <app-contact-table [contactDetails]="phoneDetails" (updateContactDetail)="createUpdateRecord($event)">
+                </app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="contactDetails"></app-contact-table>
+                <app-contact-table [contactDetails]="contactDetails">
+                </app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="faxDetails"></app-contact-table>
+                <app-contact-table [contactDetails]="faxDetails">
+                </app-contact-table>
             </div>
-
         </div>
 
         <!-- <ng-template pTemplate="footer">

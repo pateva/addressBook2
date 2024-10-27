@@ -8,5 +8,5 @@ export interface CreateRecordBody {
     lastName: string,
     imageUrl: string,
     address: AddressCreateBody,
-    contactDetauils: ContactDetailsCreateBody[]
+    contactDetails: ContactDetailsCreateBody[]
 }

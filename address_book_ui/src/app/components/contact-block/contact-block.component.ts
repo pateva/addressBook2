@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgFor, NgIf, AsyncPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -29,14 +29,16 @@ export class ContactBlockComponent {
     placeholders: string[]
   }[] = [];
 
+  @Output() updateContactDetail = new EventEmitter<{ index: number, value: string }>();
+
   // Method to enable the specific address input
   updateAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(false);
   }
 
-  // Method to save and disable the specific address input
+  // Method to save and emit the specific address input
   saveAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
+    this.updateContactDetail.emit({ index, value: this.contactDetails[index].value });
   }
-
 }

@@ -1,4 +1,7 @@
-    <app-contact-block [contactDetails]="contactDetails"></app-contact-block>
+<div *ngFor="let contact of contactDetails; let i = index">
+    <app-contact-block [contactDetails]="contactDetails" (updateContactDetail)="onUpdateContactDetail({ index: i, value: contact.value })">
+        ></app-contact-block>
     <div class="button-container">
         <p-button icon="pi pi-plus" [rounded]="true" [text]="true" severity="secondary"></p-button>
     </div>
+</div>

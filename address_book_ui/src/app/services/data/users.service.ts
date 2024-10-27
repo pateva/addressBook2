@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserPartialResponse } from '@app/interfaces/UserPartialResponse';
+import { UserPartialResponse } from '@app/interfaces/responses/UserPartialResponse';
 import { BASE_BATH } from '@app/shared/constants/data';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable, of, switchMap } from 'rxjs';
@@ -22,7 +22,7 @@ export class UsersService {
                     const headers = new HttpHeaders({
                         Authorization: `Bearer ${token}`,
                     });
-                    console.log(`Bearer ${token}`);
+
                     return this.http.get<UserPartialResponse>(this.path, { headers }).pipe(
                         switchMap((response: UserPartialResponse) => {
                             console.log(response);

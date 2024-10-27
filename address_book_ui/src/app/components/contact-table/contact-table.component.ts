@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -29,4 +29,13 @@ export class ContactTableComponent {
     isDisabled$: BehaviorSubject<boolean>,
     placeholders: string[]
   }[] = [];
+
+  @Output() updateContactDetail = new EventEmitter<{ index: number, value: string }>();
+
+  // Forward the event from ContactBlockComponent to the parent
+  onUpdateContactDetail(event: { index: number; value: string }) {
+    console.log("Emitting updateContactDetail:", { index: event.index, value: event.value });
+    this.updateContactDetail.emit(event);
+}
+
 }
