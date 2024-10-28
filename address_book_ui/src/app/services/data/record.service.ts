@@ -11,15 +11,21 @@ import { CreateRecordBody } from '@app/interfaces/payloads/CreateRecordBody';
 })
 export class RecordService {
     private path: string = BASE_BATH + "/user/";
-    private userId: BigInt | null = null;
+    private userId: BigInteger | null = null;
 
     constructor(private http: HttpClient, private auth: AuthService) { }
+
+    setUserId(userId: BigInteger): void {
+        this.userId = userId;
+    }
 
     getBasePath(): string {
         return (this.path + this.userId?.toString() + '/records')
     }
 
     createRecord(body: CreateRecordBody): Observable<RecordResponse> {
+        console.log("request path: " + this.getBasePath());
+
         return this.auth.idTokenClaims$.pipe(
             mergeMap((idTokenClaims) => {
                 const token = idTokenClaims?.__raw;
@@ -27,7 +33,7 @@ export class RecordService {
                     Authorization: `Bearer ${token}`,
                 });
 
-                return this.http.post<RecordResponse>(this.path, body, { headers });
+                return this.http.post<RecordResponse>(this.getBasePath(), body, { headers });
             })
         );
     }

@@ -47,6 +47,11 @@ export class ContactComponent implements OnInit {
     this.userService.getUserDetails().subscribe({
       next: (user: UserPartialResponse) => {
         this.user = user;
+
+        if (user.id) {
+          this.recordService.setUserId(user.id); 
+        }
+
         this.populateUserDetails(user);
       },
       error: (err) => {
@@ -130,7 +135,7 @@ export class ContactComponent implements OnInit {
       console.log("create record")
       //create
       const body: CreateRecordBody = {
-        userId: BigInt(new TextDecoder().decode(this.user.id)),
+        userId: this.user.id,
         isPersonal: true,
         firstName: '',
         lastName: '',
@@ -139,19 +144,21 @@ export class ContactComponent implements OnInit {
           street: '',
           city: '',
           country: '',
-          recordId: null ,
+          recordId: null,
         },
         contactDetails: [
           {
             recordId: null,
-            contactType: this.contactDetails[updateData.index].type,
+            type: this.contactDetails[updateData.index].type.toUpperCase(),
             value: updateData.value
           }
         ]
       }
 
-      this.recordService.createRecord(body);
-      //return so that no else clause is used
+      this.recordService.createRecord(body).subscribe({
+        next: (response) => console.log('Record created:', response),
+        error: (err) => console.error('Error creating record:', err)
+      });
     } else {
 
     }

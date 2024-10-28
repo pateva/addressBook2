@@ -31,13 +31,11 @@ export class ContactBlockComponent {
 
   @Output() updateContactDetail = new EventEmitter<{ index: number, value: string }>();
 
-  // Method to enable the specific address input
-  updateAddress(index: number) {
+  updateData(index: number) {
     this.contactDetails[index].isDisabled$.next(false);
   }
 
-  // Method to save and emit the specific address input
-  saveAddress(index: number) {
+  saveData(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
     this.updateContactDetail.emit({ index, value: this.contactDetails[index].value });
   }

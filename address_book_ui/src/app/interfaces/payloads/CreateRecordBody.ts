@@ -2,7 +2,7 @@ import { AddressCreateBody } from "./AddressCreateBody"
 import { ContactDetailsCreateBody } from "./ContactDetailsCreateBody"
 
 export interface CreateRecordBody {
-    userId: BigInt,
+    userId: BigInteger,
     isPersonal: boolean,
     firstName: string,
     lastName: string,
