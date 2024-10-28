@@ -14,7 +14,7 @@
         </ng-template>
         <div class="table-grid">
             <div class="table-item">
-                <app-contact-block [contactDetails]="address" (updateContactDetail)="createUpdateRecord($event)">
+                <app-contact-block [contactDetails]="address">
                 </app-contact-block>
             </div>
             <div class="table-item">
@@ -22,11 +22,11 @@
                 </app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="contactDetails">
+                <app-contact-table [contactDetails]="contactDetails" (updateContactDetail)="createUpdateRecord($event)">
                 </app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="faxDetails">
+                <app-contact-table [contactDetails]="faxDetails" (updateContactDetail)="createUpdateRecord($event)">
                 </app-contact-table>
             </div>
         </div>

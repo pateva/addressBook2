@@ -49,7 +49,7 @@ export class ContactComponent implements OnInit {
         this.user = user;
 
         if (user.id) {
-          this.recordService.setUserId(user.id); 
+          this.recordService.setUserId(user.id);
         }
 
         this.populateUserDetails(user);
@@ -119,36 +119,37 @@ export class ContactComponent implements OnInit {
       ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
       : 'Unknown User';
     this.contactDetails[0].value = user?.email ? user.email : ADD_EMAIL;
-    this.address[0].value = personalRecord
-      ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}`
-      : ADD_ADDRESS;
+
+    if (personalRecord?.address) {
+      const street = personalRecord.address.street ?? '';
+      const city = personalRecord.address.city ?? '';
+      const country = personalRecord.address.country ?? '';
+      this.address[0].value = `${street}, ${city}, ${country}`.trim() || ADD_ADDRESS;
+    } else {
+      this.address[0].value = ADD_ADDRESS;
+    }
     this.phoneDetails[0].value = phoneDetail ? phoneDetail.value.toString() : ADD_PHONE;
     this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
 
     //TODO changedetection ?
   }
 
+  //TODO create a special method for the address
   createUpdateRecord(updateData: { index: number, value: string }) {
     console.log("Emitting updateContactDetail:", updateData);
 
     if (this.user?.personalRecords.length === 0) {
-      console.log("create record")
-      //create
       const body: CreateRecordBody = {
         userId: this.user.id,
         isPersonal: true,
         firstName: '',
         lastName: '',
         imageUrl: '',
-        address: {
-          street: '',
-          city: '',
-          country: '',
-          recordId: null,
-        },
+        address: null,
         contactDetails: [
           {
             recordId: null,
+            //TODO this is not quite correct with the type
             type: this.contactDetails[updateData.index].type.toUpperCase(),
             value: updateData.value
           }
@@ -156,11 +157,20 @@ export class ContactComponent implements OnInit {
       }
 
       this.recordService.createRecord(body).subscribe({
-        next: (response) => console.log('Record created:', response),
+        next: (response) => {
+          this.userService.getUserDetails().subscribe({
+            next: (user) => {
+              this.user = user;
+              console.log('User data reloaded');
+            },
+            error: (err) => console.error('Error reloading user data:', err)
+          });
+        },
         error: (err) => console.error('Error creating record:', err)
       });
     } else {
-
+      //TODO 
+      console.log("else case");
     }
 
     //update
