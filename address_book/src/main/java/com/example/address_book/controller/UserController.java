@@ -1,6 +1,7 @@
 package com.example.address_book.controller;
 
 import com.example.address_book.dto.UserDto;
+import com.example.address_book.dto.UserPartialDto;
 import com.example.address_book.service.contract.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @PostMapping
-    public ResponseEntity<?> createUser() {
-        userService.createUser();
 
-        return ResponseEntity.accepted().build();
+    @PostMapping
+    public ResponseEntity<UserPartialDto> createUser() {
+
+        return ResponseEntity.ok(userService.createUser());
     }
 
     @GetMapping
-    public ResponseEntity<UserDto> getUser() {
+    public ResponseEntity<UserPartialDto> getUser() {
 
         return ResponseEntity.ok(userService.getCurrentUser());
     }

@@ -1,14 +1,12 @@
 package com.example.address_book.service.contract;
 
 import com.example.address_book.dto.UserDto;
-import com.example.address_book.model.User;
-
-import java.util.Optional;
+import com.example.address_book.dto.UserPartialDto;
 
 public interface UserService {
-    void createUser();
+    UserPartialDto createUser();
 
-    UserDto getCurrentUser();
+    UserPartialDto getCurrentUser();
 
     void validateUser(Long userId);
 

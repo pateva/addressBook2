@@ -2,7 +2,9 @@ package com.example.address_book.service.impl;
 
 import com.example.address_book.auth.CustomUserPrincipal;;
 import com.example.address_book.dto.UserDto;
+import com.example.address_book.dto.UserPartialDto;
 import com.example.address_book.exception.AuthenticationException;
+import com.example.address_book.exception.EntityAlreadyExistsException;
 import com.example.address_book.mapper.UserMapper;
 import com.example.address_book.model.User;
 import com.example.address_book.repository.UserRepository;
@@ -23,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public void createUser() {
+    public UserPartialDto createUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
@@ -32,16 +34,19 @@ public class UserServiceImpl implements UserService {
             }
 
             if (userRepository.existsByEmail(customUserPrincipal.getEmail())) {
-                return;
+                throw new EntityAlreadyExistsException("User already exists! Something is not ok");
             }
 
             var user = User.builder().email(customUserPrincipal.getEmail()).build();
-            userRepository.save(user);
+
+            return userMapper.mapEntityToPartialDto(userRepository.save(user));
         }
+
+        throw new RuntimeException("Something is not ok");
     }
 
     @Override
-    public UserDto getCurrentUser(){
+    public UserPartialDto getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserPrincipal customUserPrincipal) {
@@ -49,7 +54,9 @@ public class UserServiceImpl implements UserService {
                 throw new AuthenticationException("Email address is missing or principal is incorrect");
             }
 
-            return userMapper.mapEntityToDto(userRepository.findByEmail(customUserPrincipal.getEmail()).orElse(null));
+            var partial =  userRepository.findByEmailWithPersonalRecordOnly(customUserPrincipal.getEmail());
+            System.err.println(partial);
+            return userMapper.mapEntityToPartialDto(userRepository.findByEmailWithPersonalRecordOnly(customUserPrincipal.getEmail()).orElse(null));
         }
 
         return null;

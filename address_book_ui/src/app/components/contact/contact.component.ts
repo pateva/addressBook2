@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { BadgeModule } from 'primeng/badge';
@@ -11,6 +11,11 @@ import { BehaviorSubject } from 'rxjs';
 import { ContactTableComponent } from '../contact-table/contact-table.component';
 import { ContactBlockComponent } from '../contact-block/contact-block.component';
 import { TagModule } from 'primeng/tag';
+import { UsersService } from '@app/services/data/users.service';
+import { UserPartialResponse } from '@app/interfaces/UserPartialResponse';
+import { ContactResponse } from '@app/interfaces/ContactResponse';
+import { ContactType } from '@app/shared/util/contactType';
+import { ADD_ADDRESS, ADD_EMAIL, ADD_FAX, ADD_PHONE } from '@app/shared/constants/general';
 
 @Component({
   selector: 'app-contact',
@@ -30,18 +35,30 @@ import { TagModule } from 'primeng/tag';
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
-export class ContactComponent {
-  constructor(private cdr: ChangeDetectorRef) { }
+export class ContactComponent implements OnInit {
+  constructor(private cdr: ChangeDetectorRef,
+    private userService: UsersService
+  ) { }
 
-  name: string = "First Name";
-  subheader: string = "+12345678";
-  streetAddress: string = '';  // To store street/precise address
-  location: string = '';  // To store location
+  ngOnInit(): void {
+    this.userService.getUserDetails().subscribe({
+      next: (user: UserPartialResponse) => {
+        this.user = user;
+        this.populateUserDetails(user);  
+      },
+      error: (err) => {
+        console.error('Error: ', err);
+      }
+    })
+  }
+
+  user: UserPartialResponse | null = null;
+  name: string = "Unknown User";
 
   contactDetails = [
     {
       type: 'Email',
-      value: 'john.doe@example.com',
+      value: ADD_EMAIL,
       isDisabled$: new BehaviorSubject<boolean>(true),
       placeholders: ["gmail.com"]
     },
@@ -49,25 +66,25 @@ export class ContactComponent {
   address = [
     {
       type: 'Address',
-      value: '+359876616112',
+      value: ADD_ADDRESS,
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"]
+      placeholders: ["Street Address"]
     },
   ];
   phoneDetails = [
     {
       type: 'Phone Number',
-      value: '+359876616112',
+      value: ADD_PHONE,
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"]
+      placeholders: ["Phone Number"]
     },
   ];
   faxDetails = [
     {
-      type: 'Phone Number',
-      value: '+359876616112',
+      type: 'Fax Details',
+      value: ADD_FAX,
       isDisabled$: new BehaviorSubject<boolean>(true),
-      placeholders: ["gmail.com"]
+      placeholders: ["Fax"]
     },
   ];
 
@@ -80,11 +97,26 @@ export class ContactComponent {
 
   saveAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
-    // this.cdr.detectChanges(); // Force change detection
   }
 
   updateAddress(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
-    // this.cdr.detectChanges(); // Force change detection
+  }
+
+  populateUserDetails(user: UserPartialResponse): void {
+    let personalRecord: ContactResponse | undefined = user.personalRecords?.find(record => record.personal === true);
+    const phoneDetail = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.PHONE_NUMBER);
+    const faxDetails = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.FAX);
+    this.name = personalRecord 
+    ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
+    : 'Unknown User';    
+    this.contactDetails[0].value = user?.email ? user.email : ADD_EMAIL;
+    this.address[0].value = personalRecord 
+    ? `${personalRecord.address.street + ', ' + personalRecord.address.city + ', ' + personalRecord.address.country}` 
+    : ADD_ADDRESS;
+    this.phoneDetails[0].value = phoneDetail ? phoneDetail.value.toString() : ADD_PHONE;
+    this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
+  
+    //TODO changedetection ?
   }
 }
