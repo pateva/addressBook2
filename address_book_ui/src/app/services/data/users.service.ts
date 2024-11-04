@@ -15,37 +15,37 @@ export class UsersService {
     constructor(private http: HttpClient, private auth: AuthService) { }
 
     getUserDetails(): Observable<UserPartialResponse> {
-        return new Observable((observer) => {
+        return new Observable<UserPartialResponse>((subscriber) => {
             this.auth.idTokenClaims$.pipe(
-                switchMap((idTokenClaims) => {
+                switchMap(idTokenClaims => {
                     const token = idTokenClaims?.__raw;
                     const headers = new HttpHeaders({
                         Authorization: `Bearer ${token}`,
                     });
+    
+                    return this.http.get<UserPartialResponse>(this.path, { headers });
+                }),
+                switchMap((response: UserPartialResponse) => {
+                    if (response === null || response.id === null) {
+                        return this.createUser();
+                    }
 
-                    return this.http.get<UserPartialResponse>(this.path, { headers }).pipe(
-                        switchMap((response: UserPartialResponse) => {
-                            console.log(response);
-                            if (response === null || response.id === null) {
-                                return this.createUser(); 
-                            } 
-                                
-                            return of(response); 
-                            
-                        })
-                    );
+                    return of(response);
                 })
             ).subscribe({
                 next: (response) => {
                     this.userId = response.id; 
-                    observer.next(response); 
+                    subscriber.next(response);
+                    subscriber.complete();
                 },
                 error: (err) => {
-                    observer.error(err); 
-                },
+                    console.error("Error fetching or creating user", err);
+                    subscriber.error(err);
+                }
             });
         });
     }
+    
 
     getUserId(): BigInteger | null {
         return this.userId;

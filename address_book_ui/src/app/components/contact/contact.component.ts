@@ -39,7 +39,7 @@ import { RecordService } from '@app/services/data/record.service';
 })
 export class ContactComponent implements OnInit {
   public ContactType = ContactType;
-  
+
   constructor(private cdr: ChangeDetectorRef,
     private userService: UsersService,
     private recordService: RecordService
@@ -139,8 +139,9 @@ export class ContactComponent implements OnInit {
   //TODO create a special method for the address
   createUpdateRecord(updateData: { index: number, value: string, type: string }) {
     console.log("Emitting updateContactDetail:", updateData);
+    console.log("User object:", this.user);
 
-    if (this.user?.personalRecords?.length === 0) {
+    if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
       const body: CreateRecordBody = {
         userId: this.user.id,
         isPersonal: true,
@@ -151,7 +152,6 @@ export class ContactComponent implements OnInit {
         contactDetails: [
           {
             recordId: null,
-            //TODO this is not quite correct with the type
             type: updateData.type.toUpperCase(),
             value: updateData.value
           }
