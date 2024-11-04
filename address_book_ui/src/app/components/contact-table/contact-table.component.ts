@@ -22,7 +22,7 @@ import { ContactBlockComponent } from '../contact-block/contact-block.component'
   styleUrl: './contact-table.component.scss'
 })
 export class ContactTableComponent {
-
+  @Input() type!: string;
   @Input() contactDetails: {
     type: string,
     value: string,
@@ -30,12 +30,11 @@ export class ContactTableComponent {
     placeholders: string[]
   }[] = [];
 
-  @Output() updateContactDetail = new EventEmitter<{ index: number, value: string }>();
+  @Output() updateContactDetail = new EventEmitter<{ index: number, value: string, type: string }>();
 
   // Forward the event from ContactBlockComponent to the parent
   onUpdateContactDetail(event: { index: number; value: string }) {
-    console.log("Emitting updateContactDetail:", { index: event.index, value: event.value });
-    this.updateContactDetail.emit(event);
-}
-
+    console.log("Emitting updateContactDetail:", { index: event.index, value: event.value, type: this.type });
+    this.updateContactDetail.emit({ ...event, type: this.type });
+  }
 }

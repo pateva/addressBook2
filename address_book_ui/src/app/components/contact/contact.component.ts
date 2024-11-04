@@ -38,6 +38,8 @@ import { RecordService } from '@app/services/data/record.service';
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent implements OnInit {
+  public ContactType = ContactType;
+  
   constructor(private cdr: ChangeDetectorRef,
     private userService: UsersService,
     private recordService: RecordService
@@ -63,7 +65,7 @@ export class ContactComponent implements OnInit {
   user: UserPartialResponse | null = null;
   name: string = "Unknown User";
 
-  contactDetails = [
+  emailDetails = [
     {
       type: 'Email',
       value: ADD_EMAIL,
@@ -104,11 +106,11 @@ export class ContactComponent implements OnInit {
   }
 
   saveAddress(index: number) {
-    this.contactDetails[index].isDisabled$.next(true);
+    this.emailDetails[index].isDisabled$.next(true);
   }
 
   updateAddress(index: number) {
-    this.contactDetails[index].isDisabled$.next(true);
+    this.emailDetails[index].isDisabled$.next(true);
   }
 
   populateUserDetails(user: UserPartialResponse): void {
@@ -118,7 +120,7 @@ export class ContactComponent implements OnInit {
     this.name = personalRecord
       ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
       : 'Unknown User';
-    this.contactDetails[0].value = user?.email ? user.email : ADD_EMAIL;
+    this.emailDetails[0].value = user?.email ? user.email : ADD_EMAIL;
 
     if (personalRecord?.address) {
       const street = personalRecord.address.street ?? '';
@@ -135,10 +137,10 @@ export class ContactComponent implements OnInit {
   }
 
   //TODO create a special method for the address
-  createUpdateRecord(updateData: { index: number, value: string }) {
+  createUpdateRecord(updateData: { index: number, value: string, type: string }) {
     console.log("Emitting updateContactDetail:", updateData);
 
-    if (this.user?.personalRecords.length === 0) {
+    if (this.user?.personalRecords?.length === 0) {
       const body: CreateRecordBody = {
         userId: this.user.id,
         isPersonal: true,
@@ -150,7 +152,7 @@ export class ContactComponent implements OnInit {
           {
             recordId: null,
             //TODO this is not quite correct with the type
-            type: this.contactDetails[updateData.index].type.toUpperCase(),
+            type: updateData.type.toUpperCase(),
             value: updateData.value
           }
         ]

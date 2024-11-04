@@ -18,15 +18,15 @@
                 </app-contact-block>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="phoneDetails" (updateContactDetail)="createUpdateRecord($event)">
+                <app-contact-table [contactDetails]="phoneDetails" [type]="ContactType.PHONE_NUMBER" (updateContactDetail)="createUpdateRecord($event)">
                 </app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="contactDetails" (updateContactDetail)="createUpdateRecord($event)">
+                <app-contact-table [contactDetails]="emailDetails" [type]="ContactType.EMAIL" (updateContactDetail)="createUpdateRecord($event)">
                 </app-contact-table>
             </div>
             <div class="table-item">
-                <app-contact-table [contactDetails]="faxDetails" (updateContactDetail)="createUpdateRecord($event)">
+                <app-contact-table [contactDetails]="faxDetails" [type]="ContactType.FAX" (updateContactDetail)="createUpdateRecord($event)">
                 </app-contact-table>
             </div>
         </div>
