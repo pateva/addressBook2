@@ -14,10 +14,14 @@ import { TagModule } from 'primeng/tag';
 import { UsersService } from '@app/services/data/users.service';
 import { UserPartialResponse } from '@app/interfaces/responses/UserPartialResponse';
 import { ContactResponse } from '@app/interfaces/responses/ContactResponse';
+import { ContactDetailResponse } from '@app/interfaces/responses/ContactDetailResponse';
+import { AddressCreateBody } from '@app/interfaces/payloads/AddressCreateBody';
+import { ContactDetailsCreateBody } from '@app/interfaces/payloads/ContactDetailsCreateBody';
 import { CreateRecordBody } from '@app/interfaces/payloads/CreateRecordBody';
 import { ContactType } from '@app/shared/util/contactType';
 import { ADD_ADDRESS, ADD_EMAIL, ADD_FAX, ADD_PHONE } from '@app/shared/constants/general';
 import { RecordService } from '@app/services/data/record.service';
+import { UpdateRecordBody } from '@app/interfaces/payloads/UpdateRecordBody';
 
 @Component({
   selector: 'app-contact',
@@ -35,7 +39,7 @@ import { RecordService } from '@app/services/data/record.service';
     ContactBlockComponent,
     TagModule],
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.scss'
+  styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent implements OnInit {
   public ContactType = ContactType;
@@ -53,6 +57,8 @@ export class ContactComponent implements OnInit {
         if (user.id) {
           this.recordService.setUserId(user.id);
         }
+
+        console.log("user details: " + user);
 
         this.populateUserDetails(user);
       },
@@ -132,8 +138,6 @@ export class ContactComponent implements OnInit {
     }
     this.phoneDetails[0].value = phoneDetail ? phoneDetail.value.toString() : ADD_PHONE;
     this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
-
-    //TODO changedetection ?
   }
 
   //TODO create a special method for the address
@@ -142,39 +146,116 @@ export class ContactComponent implements OnInit {
     console.log("User object:", this.user);
 
     if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
-      const body: CreateRecordBody = {
-        userId: this.user.id,
-        isPersonal: true,
-        firstName: '',
-        lastName: '',
-        imageUrl: '',
-        address: null,
-        contactDetails: [
-          {
-            recordId: null,
-            type: updateData.type.toUpperCase(),
-            value: updateData.value
-          }
-        ]
-      }
+      console.log("create record");
+      this.createRecord(updateData);
 
-      this.recordService.createRecord(body).subscribe({
-        next: (response) => {
-          this.userService.getUserDetails().subscribe({
-            next: (user) => {
-              this.user = user;
-              console.log('User data reloaded');
-            },
-            error: (err) => console.error('Error reloading user data:', err)
-          });
-        },
-        error: (err) => console.error('Error creating record:', err)
-      });
-    } else {
-      //TODO 
-      console.log("else case");
+      return;
     }
 
-    //update
+    let personalRecord = this.user?.personalRecords.find(record => record.personal);
+
+    if (personalRecord !== undefined) {
+      console.log("update  record");
+      this.updateRecord(personalRecord, updateData);
+    } else {
+      console.error('Personal contact not found');
+    }
+  }
+
+  updateRecord(personalRecord: ContactResponse,
+    updateData: { index: number, value: string, type: string }) {
+    const body: UpdateRecordBody = {
+      id: personalRecord.id,
+      userId: this.user?.id,
+      isPersonal: personalRecord.personal,
+      firstName: personalRecord.firstName,
+      lastName: personalRecord.lastName,
+      imageUrl: personalRecord.imageUrl,
+      address: personalRecord.address ?? {} as AddressCreateBody ,
+      contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, updateData)
+    }
+
+    this.recordService.updateRecord(body).subscribe({
+      next: (response) => {
+        this.userService.getUserDetails().subscribe({
+          next: (user) => {
+            this.user = user;
+            console.log('User data reloaded');
+          },
+          error: (err) => console.error('Error reloading user data:', err)
+        });
+      },
+      error: (err) => console.error('Error creating record:', err)
+    });
+  }
+
+  private updateContactDetails(recordId: BigInteger,
+    existingContacts: ContactDetailResponse[],
+    updateData: { index: number, value: string, type: string }) {
+    let newContacts: ContactDetailsCreateBody[] = [];
+    let updatesType: boolean = false;
+
+    console.log("update data" + updateData.type);
+
+    existingContacts.forEach(contact => {
+      if (contact.type === updateData.type) {
+        newContacts.push({
+          recordId: recordId,
+          type: updateData.type,
+          value: updateData.value
+        })
+
+        updatesType = true;
+        return;
+      }
+
+      newContacts.push({
+        recordId: recordId,
+        type: contact.type,
+        value: contact.value
+      })
+    })
+
+    if(!updatesType) {
+      newContacts.push({
+        recordId: recordId,
+        type: updateData.type,
+        value: updateData.value
+      })
+    }
+
+    return newContacts;
+  }
+
+
+  private createRecord(updateData: { index: number, value: string, type: string }) {
+    const body: CreateRecordBody = {
+      userId: this.user?.id,
+      isPersonal: true,
+      firstName: '',
+      lastName: '',
+      imageUrl: '',
+      address: null,
+      contactDetails: [
+        {
+          recordId: null,
+          type: updateData.type.toUpperCase(),
+          value: updateData.value
+        }
+      ]
+    }
+
+    this.recordService.createRecord(body).subscribe({
+      next: (response) => {
+        this.userService.getUserDetails().subscribe({
+          next: (user) => {
+            this.user = user;
+            console.log('User data reloaded');
+          },
+          error: (err) => console.error('Error reloading user data:', err)
+        });
+      },
+      error: (err) => console.error('Error creating record:', err)
+    });
   }
 }

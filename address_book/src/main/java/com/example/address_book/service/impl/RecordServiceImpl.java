@@ -126,7 +126,10 @@ public class RecordServiceImpl implements RecordService {
         target.getContactDetails().clear();
         source.getContactDetails().forEach(contactDetail -> contactDetail.setRecord(target));
         target.getContactDetails().addAll(source.getContactDetails());
-        BeanUtils.copyProperties(source.getAddress(), target.getAddress(), "id", "record");
+
+        if(target.getAddress() != null && source.getAddress() != null ) {
+            BeanUtils.copyProperties(source.getAddress(), target.getAddress(), "id", "record");
+        }
 
         return target;
     }

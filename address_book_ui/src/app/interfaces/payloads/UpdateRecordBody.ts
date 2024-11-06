@@ -1,9 +1,10 @@
 import { AddressCreateBody } from "./AddressCreateBody"
 import { ContactDetailsCreateBody } from "./ContactDetailsCreateBody"
 
-export interface CreateRecordBody {
+export interface UpdateRecordBody {
+    id: BigInteger,
     userId: BigInteger | undefined,
-    isPersonal: boolean,
+    isPersonal: Boolean,
     firstName: string,
     lastName: string,
     imageUrl: string,

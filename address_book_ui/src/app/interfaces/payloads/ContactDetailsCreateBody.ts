@@ -1,5 +1,5 @@
 export interface ContactDetailsCreateBody {
-    recordId: BigInt | null,
+    recordId: BigInteger | null,
     type: string,
     value: string
 }

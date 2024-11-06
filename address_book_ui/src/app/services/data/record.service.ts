@@ -5,6 +5,7 @@ import { Observable, of, mergeMap } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
 import { RecordResponse } from '@app/interfaces/responses/RecordResponse';
 import { CreateRecordBody } from '@app/interfaces/payloads/CreateRecordBody';
+import { UpdateRecordBody } from '@app/interfaces/payloads/UpdateRecordBody';
 
 @Injectable({
     providedIn: 'root'
@@ -34,6 +35,22 @@ export class RecordService {
                 });
 
                 return this.http.post<RecordResponse>(this.getBasePath(), body, { headers });
+            })
+        );
+    }
+
+    updateRecord(body: UpdateRecordBody): Observable<RecordResponse> {
+        var path = this.getBasePath() + '/' + body.id;
+        console.log("request path: " + this.getBasePath());
+
+        return this.auth.idTokenClaims$.pipe(
+            mergeMap((idTokenClaims) => {
+                const token = idTokenClaims?.__raw;
+                const headers = new HttpHeaders({
+                    Authorization: `Bearer ${token}`,
+                });
+
+                return this.http.patch<RecordResponse>(path, body, { headers });
             })
         );
     }
