@@ -67,7 +67,8 @@ export class ContactComponent implements OnInit {
   }
 
   user: UserPartialResponse | null = null;
-  name: string = "Unknown User";
+  name: string = "";
+  imageUrl: string = "";
 
   emailDetails = [
     {
@@ -117,13 +118,18 @@ export class ContactComponent implements OnInit {
     this.emailDetails[index].isDisabled$.next(true);
   }
 
+  showPhotoNameComp() {
+    console.log("test");
+  }
+
   populateUserDetails(user: UserPartialResponse): void {
     let personalRecord: ContactResponse | undefined = user.personalRecords?.find(record => record.personal === true);
     const phoneDetail = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.PHONE_NUMBER);
     const faxDetails = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.FAX);
+    this.imageUrl = personalRecord?.imageUrl || "";
     this.name = personalRecord
-      ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
-      : 'Unknown User';
+      ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Username'
+      : 'Username';
     this.emailDetails[0].value = user?.email ? user.email : ADD_EMAIL;
 
     if (personalRecord?.address) {
@@ -138,9 +144,7 @@ export class ContactComponent implements OnInit {
     this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
   }
 
-  //TODO create a special method for the address
   createUpdateRecord(updateData: { index: number, value: string, type: string }) {
-
     if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
       console.log("create record");
       this.createRecord(updateData);
