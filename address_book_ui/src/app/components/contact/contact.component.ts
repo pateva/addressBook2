@@ -58,8 +58,6 @@ export class ContactComponent implements OnInit {
           this.recordService.setUserId(user.id);
         }
 
-        console.log("user details: " + user);
-
         this.populateUserDetails(user);
       },
       error: (err) => {
@@ -142,8 +140,6 @@ export class ContactComponent implements OnInit {
 
   //TODO create a special method for the address
   createUpdateRecord(updateData: { index: number, value: string, type: string }) {
-    console.log("Emitting updateContactDetail:", updateData);
-    console.log("User object:", this.user);
 
     if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
       console.log("create record");
@@ -164,16 +160,11 @@ export class ContactComponent implements OnInit {
 
   updateRecord(personalRecord: ContactResponse,
     updateData: { index: number, value: string, type: string }) {
-    const body: UpdateRecordBody = {
-      id: personalRecord.id,
-      userId: this.user?.id,
-      isPersonal: personalRecord.personal,
-      firstName: personalRecord.firstName,
-      lastName: personalRecord.lastName,
-      imageUrl: personalRecord.imageUrl,
-      address: personalRecord.address ?? {} as AddressCreateBody ,
-      contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, updateData)
-    }
+      const body: UpdateRecordBody = 
+      (updateData.type === ContactType.ADDRESS 
+        ? this.createUpdateRecordWithAddress(personalRecord, updateData.value) 
+        : this.createUpdateRecordWithContact(personalRecord, updateData));
+  
 
     this.recordService.updateRecord(body).subscribe({
       next: (response) => {
@@ -189,13 +180,56 @@ export class ContactComponent implements OnInit {
     });
   }
 
+  private createUpdateRecordWithAddress(personalRecord: ContactResponse,address: string) {
+    const body: UpdateRecordBody = {
+      id: personalRecord.id,
+      userId: this.user?.id,
+      isPersonal: personalRecord.personal,
+      firstName: personalRecord.firstName,
+      lastName: personalRecord.lastName,
+      imageUrl: personalRecord.imageUrl,
+      address: this.formatAddress(address),
+      contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, null)
+    }
+
+    return body;
+  }
+
+
+  private createUpdateRecordWithContact(personalRecord: ContactResponse,
+    updateData: { index: number, value: string, type: string }
+  ) {
+    const body: UpdateRecordBody = {
+      id: personalRecord.id,
+      userId: this.user?.id,
+      isPersonal: personalRecord.personal,
+      firstName: personalRecord.firstName,
+      lastName: personalRecord.lastName,
+      imageUrl: personalRecord.imageUrl,
+      address: personalRecord.address,
+      contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, updateData)
+    }
+
+    return body;
+  }
+
   private updateContactDetails(recordId: BigInteger,
     existingContacts: ContactDetailResponse[],
-    updateData: { index: number, value: string, type: string }) {
+    updateData: { index: number, value: string, type: string } | null)  {
     let newContacts: ContactDetailsCreateBody[] = [];
     let updatesType: boolean = false;
 
-    console.log("update data" + updateData.type);
+    if(updateData === null) {
+      existingContacts.forEach(contact => {
+        newContacts.push({
+          recordId: recordId,
+          type: contact.type,
+          value: contact.value
+        })
+      })
+
+      return newContacts;
+    }
 
     existingContacts.forEach(contact => {
       if (contact.type === updateData.type) {
@@ -216,7 +250,7 @@ export class ContactComponent implements OnInit {
       })
     })
 
-    if(!updatesType) {
+    if (!updatesType) {
       newContacts.push({
         recordId: recordId,
         type: updateData.type,
@@ -229,7 +263,29 @@ export class ContactComponent implements OnInit {
 
 
   private createRecord(updateData: { index: number, value: string, type: string }) {
-    const body: CreateRecordBody = {
+    let body: CreateRecordBody;
+
+    if (updateData.type == ContactType.ADDRESS) {
+      body = this.createRecordWithAddress(updateData.value);
+    } else {
+      body = this.createRecordWithContact(updateData);
+    }
+
+    this.recordService.createRecord(body).subscribe({
+      next: (response) => {
+        this.userService.getUserDetails().subscribe({
+          next: (user) => {
+            this.user = user;
+          },
+          error: (err) => console.error('Error reloading user data:', err)
+        });
+      },
+      error: (err) => console.error('Error creating record:', err)
+    });
+  }
+
+  private createRecordWithContact(updateData: { index: number, value: string, type: string }) {
+    const createRecordBody: CreateRecordBody = {
       userId: this.user?.id,
       isPersonal: true,
       firstName: '',
@@ -245,17 +301,33 @@ export class ContactComponent implements OnInit {
       ]
     }
 
-    this.recordService.createRecord(body).subscribe({
-      next: (response) => {
-        this.userService.getUserDetails().subscribe({
-          next: (user) => {
-            this.user = user;
-            console.log('User data reloaded');
-          },
-          error: (err) => console.error('Error reloading user data:', err)
-        });
-      },
-      error: (err) => console.error('Error creating record:', err)
-    });
+    return createRecordBody;
+  }
+
+  private createRecordWithAddress(address: string) {
+    const createRecordBody: CreateRecordBody = {
+      userId: this.user?.id,
+      isPersonal: true,
+      firstName: '',
+      lastName: '',
+      imageUrl: '',
+      address: this.formatAddress(address),
+      contactDetails: []
+    }
+
+    return createRecordBody;
+  }
+
+  private formatAddress(address: string) {
+    const delimeter: string = ",";
+    const maxSz: number = 3;
+    let spltAddress = address.split(delimeter, maxSz);
+    let addressCreateBody: AddressCreateBody = {
+      street: spltAddress[0] ? spltAddress[0].trim() : "",
+      city: spltAddress[1] ? spltAddress[1].trim() : "",
+      country: spltAddress[2] ? spltAddress[2].trim() : ""
+    }
+
+    return addressCreateBody;
   }
 }

@@ -14,7 +14,7 @@
         </ng-template>
         <div class="table-grid">
             <div class="table-item">
-                <app-contact-block [contactDetails]="address">
+                <app-contact-block [contactDetails]="address" [type]="ContactType.ADDRESS" (updateContactDetail)="createUpdateRecord($event)">
                 </app-contact-block>
             </div>
             <div class="table-item">

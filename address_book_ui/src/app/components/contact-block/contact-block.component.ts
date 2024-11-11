@@ -22,6 +22,7 @@ import { BehaviorSubject } from 'rxjs';
   styleUrl: './contact-block.component.scss'
 })
 export class ContactBlockComponent {
+  @Input() type!: string;
   @Input() contactDetails: {
     type: string,
     value: string,
@@ -29,7 +30,7 @@ export class ContactBlockComponent {
     placeholders: string[]
   }[] = [];
 
-  @Output() updateContactDetail = new EventEmitter<{ index: number, value: string }>();
+  @Output() updateContactDetail = new EventEmitter<{ index: number, value: string, type: string }>();
 
   updateData(index: number) {
     this.contactDetails[index].isDisabled$.next(false);
@@ -37,6 +38,6 @@ export class ContactBlockComponent {
 
   saveData(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
-    this.updateContactDetail.emit({ index, value: this.contactDetails[index].value });
+    this.updateContactDetail.emit({ index, value: this.contactDetails[index].value, type: this.type});
   }
 }
