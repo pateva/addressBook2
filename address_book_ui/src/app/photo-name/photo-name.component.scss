@@ -17,4 +17,18 @@
     width: 90%;        // Responsive width within the max-width
     max-height: 80vh;  // Set desired maximum height
     overflow-y: auto; 
+
+    .inputs {
+        margin: 0.5rem 0rem;
+    }
+
+    .button-container {
+        display: flex;
+        margin-right: 0;
+
+        .save-button {
+            margin-left: auto;
+            margin-right: 0;
+        }
+    }
 }

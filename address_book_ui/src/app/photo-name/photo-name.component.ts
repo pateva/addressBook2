@@ -3,6 +3,10 @@ import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { FormsModule } from '@angular/forms';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-photo-name',
@@ -10,7 +14,11 @@ import { MenuModule } from 'primeng/menu';
   imports: [PanelModule,
     AvatarModule,
     ButtonModule,
-    MenuModule],
+    MenuModule,
+    FormsModule, 
+    InputGroupModule, 
+    InputGroupAddonModule, 
+    InputTextModule],
   templateUrl: './photo-name.component.html',
   styleUrl: './photo-name.component.scss'
 })
