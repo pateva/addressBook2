@@ -22,6 +22,7 @@ import { ContactType } from '@app/shared/util/contactType';
 import { ADD_ADDRESS, ADD_EMAIL, ADD_FAX, ADD_PHONE } from '@app/shared/constants/general';
 import { RecordService } from '@app/services/data/record.service';
 import { UpdateRecordBody } from '@app/interfaces/payloads/UpdateRecordBody';
+import { PhotoNameComponent } from '@app/photo-name/photo-name.component';
 
 @Component({
   selector: 'app-contact',
@@ -37,7 +38,8 @@ import { UpdateRecordBody } from '@app/interfaces/payloads/UpdateRecordBody';
     TableModule,
     ContactTableComponent,
     ContactBlockComponent,
-    TagModule],
+    TagModule,
+    PhotoNameComponent],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss']
 })
@@ -69,6 +71,7 @@ export class ContactComponent implements OnInit {
   user: UserPartialResponse | null = null;
   name: string = "";
   imageUrl: string = "";
+  showPhotoNameOverlay: boolean = false;
 
   emailDetails = [
     {
@@ -119,7 +122,11 @@ export class ContactComponent implements OnInit {
   }
 
   showPhotoNameComp() {
-    console.log("test");
+    this.showPhotoNameOverlay = true;
+  }
+
+  hidePhotoNameComp() {
+    this.showPhotoNameOverlay = false;
   }
 
   populateUserDetails(user: UserPartialResponse): void {
@@ -164,11 +171,11 @@ export class ContactComponent implements OnInit {
 
   updateRecord(personalRecord: ContactResponse,
     updateData: { index: number, value: string, type: string }) {
-      const body: UpdateRecordBody = 
-      (updateData.type === ContactType.ADDRESS 
-        ? this.createUpdateRecordWithAddress(personalRecord, updateData.value) 
+    const body: UpdateRecordBody =
+      (updateData.type === ContactType.ADDRESS
+        ? this.createUpdateRecordWithAddress(personalRecord, updateData.value)
         : this.createUpdateRecordWithContact(personalRecord, updateData));
-  
+
 
     this.recordService.updateRecord(body).subscribe({
       next: (response) => {
@@ -184,7 +191,7 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  private createUpdateRecordWithAddress(personalRecord: ContactResponse,address: string) {
+  private createUpdateRecordWithAddress(personalRecord: ContactResponse, address: string) {
     const body: UpdateRecordBody = {
       id: personalRecord.id,
       userId: this.user?.id,
@@ -219,11 +226,11 @@ export class ContactComponent implements OnInit {
 
   private updateContactDetails(recordId: BigInteger,
     existingContacts: ContactDetailResponse[],
-    updateData: { index: number, value: string, type: string } | null)  {
+    updateData: { index: number, value: string, type: string } | null) {
     let newContacts: ContactDetailsCreateBody[] = [];
     let updatesType: boolean = false;
 
-    if(updateData === null) {
+    if (updateData === null) {
       existingContacts.forEach(contact => {
         newContacts.push({
           recordId: recordId,
