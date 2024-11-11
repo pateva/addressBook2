@@ -28,16 +28,4 @@ public interface RecordMapper {
     @Mapping(target = "totalElements", expression = "java(recordPage.getTotalElements())")
     @Mapping(target = "recordDtoList", source = "content") // Automatically maps the list using the toRecordDtoList method
     PagedRecordDto toPagedRecordDto(Page<Record> recordPage);
-//    {
-//        if (recordPage == null) {
-//            return null;
-//        }
-//
-//        PagedRecordDto pagedRecordDto = new PagedRecordDto();
-//        pagedRecordDto.setTotalPages(recordPage.getTotalPages());
-//        pagedRecordDto.setTotalElements(recordPage.getTotalElements());
-//        pagedRecordDto.setRecordDtoList(mapEntityListToPartialDtoList(recordPage.getContent()));
-//
-//        return pagedRecordDto;
-//    }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgFor, NgIf, AsyncPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -22,6 +22,7 @@ import { BehaviorSubject } from 'rxjs';
   styleUrl: './contact-block.component.scss'
 })
 export class ContactBlockComponent {
+  @Input() type!: string;
   @Input() contactDetails: {
     type: string,
     value: string,
@@ -29,14 +30,14 @@ export class ContactBlockComponent {
     placeholders: string[]
   }[] = [];
 
-  // Method to enable the specific address input
-  updateAddress(index: number) {
+  @Output() updateContactDetail = new EventEmitter<{ index: number, value: string, type: string }>();
+
+  updateData(index: number) {
     this.contactDetails[index].isDisabled$.next(false);
   }
 
-  // Method to save and disable the specific address input
-  saveAddress(index: number) {
+  saveData(index: number) {
     this.contactDetails[index].isDisabled$.next(true);
+    this.updateContactDetail.emit({ index, value: this.contactDetails[index].value, type: this.type});
   }
-
 }

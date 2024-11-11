@@ -12,11 +12,11 @@
                         [(ngModel)]="contact.value"></textarea>
 
                     <button *ngIf="(contact.isDisabled$ | async)" type="button" pButton icon="pi pi-pencil"
-                        severity="secondary" (click)="updateAddress(i)">
+                        severity="secondary" (click)="updateData(i)">
                     </button>
 
                     <button *ngIf="!(contact.isDisabled$ | async)" type="button" pButton icon="pi pi-check"
-                        severity="secondary" (click)="saveAddress(i)">
+                        severity="secondary" (click)="saveData(i)">
                     </button>
                 </p-inputGroup>
             </td>

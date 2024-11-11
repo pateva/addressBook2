@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserPartialResponse } from '@app/interfaces/UserPartialResponse';
+import { UserPartialResponse } from '@app/interfaces/responses/UserPartialResponse';
 import { BASE_BATH } from '@app/shared/constants/data';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable, of, switchMap } from 'rxjs';
@@ -15,37 +15,37 @@ export class UsersService {
     constructor(private http: HttpClient, private auth: AuthService) { }
 
     getUserDetails(): Observable<UserPartialResponse> {
-        return new Observable((observer) => {
+        return new Observable<UserPartialResponse>((subscriber) => {
             this.auth.idTokenClaims$.pipe(
-                switchMap((idTokenClaims) => {
+                switchMap(idTokenClaims => {
                     const token = idTokenClaims?.__raw;
                     const headers = new HttpHeaders({
                         Authorization: `Bearer ${token}`,
                     });
-                    console.log(`Bearer ${token}`);
-                    return this.http.get<UserPartialResponse>(this.path, { headers }).pipe(
-                        switchMap((response: UserPartialResponse) => {
-                            console.log(response);
-                            if (response === null || response.id === null) {
-                                return this.createUser(); 
-                            } 
-                                
-                            return of(response); 
-                            
-                        })
-                    );
+    
+                    return this.http.get<UserPartialResponse>(this.path, { headers });
+                }),
+                switchMap((response: UserPartialResponse) => {
+                    if (response === null || response.id === null) {
+                        return this.createUser();
+                    }
+
+                    return of(response);
                 })
             ).subscribe({
                 next: (response) => {
                     this.userId = response.id; 
-                    observer.next(response); 
+                    subscriber.next(response);
+                    subscriber.complete();
                 },
                 error: (err) => {
-                    observer.error(err); 
-                },
+                    console.error("Error fetching or creating user", err);
+                    subscriber.error(err);
+                }
             });
         });
     }
+    
 
     getUserId(): BigInteger | null {
         return this.userId;
