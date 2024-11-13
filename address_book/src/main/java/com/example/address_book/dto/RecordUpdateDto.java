@@ -11,6 +11,7 @@ public class RecordUpdateDto {
     private String firstName;
     private String lastName;
     private String firmName;
+    private String imageUrl;
     private AddressDto address;
     private Set<ContactDetailDto> contactDetails;
 }

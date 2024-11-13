@@ -34,6 +34,7 @@
                 </app-contact-table>
             </div>
         </div>
-        <app-photo-name *ngIf="showPhotoNameOverlay" (close)="hidePhotoNameComp()"></app-photo-name>
+        <app-photo-name *ngIf="showPhotoNameOverlay" (close)="hidePhotoNameComp()"
+            (updateNameImage)="createUpdateRecordFromPopUp($event)"></app-photo-name>
     </p-card>
 </div>

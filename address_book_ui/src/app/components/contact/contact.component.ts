@@ -151,6 +151,28 @@ export class ContactComponent implements OnInit {
     this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
   }
 
+  createUpdateRecordFromPopUp(updateData: {
+    imageUrl: string | undefined,
+    firstName: string | undefined, lastName: string | undefined
+  }) {
+
+    if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
+      console.log("create record");
+      this.createRecordFromPopUp(updateData);
+
+      return;
+    }
+
+    let personalRecord = this.user?.personalRecords.find(record => record.personal);
+
+    if (personalRecord !== undefined) {
+      console.log("update  record");
+      this.updateRecordFromPopUp(personalRecord, updateData);
+    } else {
+      console.error('Personal contact not found');
+    }
+  }
+
   createUpdateRecord(updateData: { index: number, value: string, type: string }) {
     if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
       console.log("create record");
@@ -191,6 +213,30 @@ export class ContactComponent implements OnInit {
     });
   }
 
+  updateRecordFromPopUp(personalRecord: ContactResponse,
+    updateData: {
+      imageUrl: string | undefined,
+      firstName: string | undefined, lastName: string | undefined
+    }) {
+
+      this.showPhotoNameOverlay = false;
+
+    this.recordService.updateRecord(this.createUpdateRecordBodyFromPopUp(personalRecord, updateData))
+      .subscribe({
+        next: (response) => {
+          this.userService.getUserDetails().subscribe({
+            next: (user) => {
+              this.user = user;
+              console.log('User data reloaded');
+            },
+            error: (err) => console.error('Error reloading user data:', err)
+          });
+        },
+        error: (err) => console.error('Error creating record:', err)
+      });
+
+  }
+
   private createUpdateRecordWithAddress(personalRecord: ContactResponse, address: string) {
     const body: UpdateRecordBody = {
       id: personalRecord.id,
@@ -200,6 +246,27 @@ export class ContactComponent implements OnInit {
       lastName: personalRecord.lastName,
       imageUrl: personalRecord.imageUrl,
       address: this.formatAddress(address),
+      contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, null)
+    }
+
+    return body;
+  }
+
+  private createUpdateRecordBodyFromPopUp(personalRecord: ContactResponse,
+    updateData: {
+      imageUrl: string | undefined,
+      firstName: string | undefined, lastName: string | undefined
+    }
+  ) {
+
+    const body: UpdateRecordBody = {
+      id: personalRecord.id,
+      userId: this.user?.id,
+      isPersonal: personalRecord.personal,
+      firstName: updateData.firstName ?? personalRecord.firstName,
+      lastName: updateData.lastName ?? personalRecord.lastName,
+      imageUrl: updateData.imageUrl ?? personalRecord.imageUrl,
+      address: personalRecord.address,
       contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, null)
     }
 
@@ -295,6 +362,14 @@ export class ContactComponent implements OnInit {
     });
   }
 
+  createRecordFromPopUp(updateData: {
+    imageUrl: string | undefined,
+    firstName: string | undefined, lastName: string | undefined
+  }) {
+
+    this.recordService.createRecord(this.createRecordBodyFromPopup(updateData));
+  }
+
   private createRecordWithContact(updateData: { index: number, value: string, type: string }) {
     const createRecordBody: CreateRecordBody = {
       userId: this.user?.id,
@@ -323,6 +398,23 @@ export class ContactComponent implements OnInit {
       lastName: '',
       imageUrl: '',
       address: this.formatAddress(address),
+      contactDetails: []
+    }
+
+    return createRecordBody;
+  }
+
+  private createRecordBodyFromPopup(updateData: {
+    imageUrl: string | undefined,
+    firstName: string | undefined, lastName: string | undefined
+  }) {
+    const createRecordBody: CreateRecordBody = {
+      userId: this.user?.id,
+      isPersonal: true,
+      firstName: updateData.firstName ?? '',
+      lastName: updateData.lastName ?? '',
+      imageUrl: updateData.imageUrl ?? '',
+      address: null,
       contactDetails: []
     }
 

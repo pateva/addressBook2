@@ -34,7 +34,6 @@ export class ContactTableComponent {
 
   // Forward the event from ContactBlockComponent to the parent
   onUpdateContactDetail(event: { index: number; value: string }) {
-    console.log("Emitting updateContactDetail:", { index: event.index, value: event.value, type: this.type });
     this.updateContactDetail.emit({ ...event, type: this.type });
   }
 }

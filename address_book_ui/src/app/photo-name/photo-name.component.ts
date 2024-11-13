@@ -24,4 +24,22 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class PhotoNameComponent {
   @Output() close = new EventEmitter<void>();
+  @Output() updateNameImage = new EventEmitter<{imageUrl: string | undefined, 
+    firstName: string | undefined, lastName: string | undefined
+  }>();
+  imageUrl?: string;
+  firstName?: string;
+  lastName?: string;
+
+  onUpdateNameImage() {
+    console.log("Emitting:", this.firstName, this.lastName, this.imageUrl);
+      this.updateNameImage.emit(
+        {
+          imageUrl: this.imageUrl,
+          firstName: this.firstName,
+          lastName: this.lastName
+        }
+      );
+    }
+
 }
