@@ -26,6 +26,7 @@ public class LabelServiceImpl implements LabelService {
     public LabelDto createLabel(LabelCreateDto labelCreateDto) {
         userService.validateUser(labelCreateDto.getUserId());
         var label = labelMapper.mapCreateDtoToEntity(labelCreateDto);
+        label.getUser().setId(labelCreateDto.getUserId());
 
         return labelMapper.mapEntityToDto(labelRepository.save(label));
     }

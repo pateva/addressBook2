@@ -219,8 +219,6 @@ export class ContactComponent implements OnInit {
       firstName: string | undefined, lastName: string | undefined
     }) {
 
-      this.showPhotoNameOverlay = false;
-
     this.recordService.updateRecord(this.createUpdateRecordBodyFromPopUp(personalRecord, updateData))
       .subscribe({
         next: (response) => {
@@ -235,6 +233,7 @@ export class ContactComponent implements OnInit {
         error: (err) => console.error('Error creating record:', err)
       });
 
+      this.showPhotoNameOverlay = false;
   }
 
   private createUpdateRecordWithAddress(personalRecord: ContactResponse, address: string) {
