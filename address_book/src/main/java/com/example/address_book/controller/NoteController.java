@@ -31,7 +31,7 @@ public class NoteController {
     public ResponseEntity<Void> createNote(@RequestBody final NoteCreateDto noteDto) {
         noteService.createNote(noteDto);
 
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
@@ -44,6 +44,6 @@ public class NoteController {
     public ResponseEntity<Void> deleteNote(@PathVariable final Long id) {
         noteService.deleteNote(id);
 
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.noContent().build();
     }
 }

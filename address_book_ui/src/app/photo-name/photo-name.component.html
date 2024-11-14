@@ -1,0 +1,19 @@
+<div class="overlay" (click)="close.emit()">
+    <div class="card" (click)="$event.stopPropagation()">
+        <p-panel [toggleable]="false">
+            <p-inputGroup class="inputs">
+                <p-inputGroupAddon>
+                    <i class="pi pi-user"></i>
+                </p-inputGroupAddon>
+                <input pInputText placeholder="Profile Picture Url" [(ngModel)]="imageUrl" />
+            </p-inputGroup>
+            <p-inputGroup class="inputs">
+                <input type="text" pInputText placeholder="First Name" [(ngModel)]="firstName"/>
+                <input type="text" pInputText placeholder="Last Name" [(ngModel)]="lastName"/>
+            </p-inputGroup>
+            <div class="button-container">
+                <p-button label="Save" severity="secondary" class="save-button" (click)="onUpdateNameImage()"/>
+            </div>
+        </p-panel>
+    </div>
+</div>

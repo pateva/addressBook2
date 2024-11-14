@@ -22,6 +22,7 @@ import { ContactType } from '@app/shared/util/contactType';
 import { ADD_ADDRESS, ADD_EMAIL, ADD_FAX, ADD_PHONE } from '@app/shared/constants/general';
 import { RecordService } from '@app/services/data/record.service';
 import { UpdateRecordBody } from '@app/interfaces/payloads/UpdateRecordBody';
+import { PhotoNameComponent } from '@app/photo-name/photo-name.component';
 
 @Component({
   selector: 'app-contact',
@@ -37,7 +38,8 @@ import { UpdateRecordBody } from '@app/interfaces/payloads/UpdateRecordBody';
     TableModule,
     ContactTableComponent,
     ContactBlockComponent,
-    TagModule],
+    TagModule,
+    PhotoNameComponent],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss']
 })
@@ -67,7 +69,9 @@ export class ContactComponent implements OnInit {
   }
 
   user: UserPartialResponse | null = null;
-  name: string = "Unknown User";
+  name: string = "";
+  imageUrl: string = "";
+  showPhotoNameOverlay: boolean = false;
 
   emailDetails = [
     {
@@ -117,13 +121,22 @@ export class ContactComponent implements OnInit {
     this.emailDetails[index].isDisabled$.next(true);
   }
 
+  showPhotoNameComp() {
+    this.showPhotoNameOverlay = true;
+  }
+
+  hidePhotoNameComp() {
+    this.showPhotoNameOverlay = false;
+  }
+
   populateUserDetails(user: UserPartialResponse): void {
     let personalRecord: ContactResponse | undefined = user.personalRecords?.find(record => record.personal === true);
     const phoneDetail = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.PHONE_NUMBER);
     const faxDetails = personalRecord?.contactDetails?.find(detail => detail.type === ContactType.FAX);
+    this.imageUrl = personalRecord?.imageUrl || "";
     this.name = personalRecord
-      ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Unknown User'
-      : 'Unknown User';
+      ? `${personalRecord.firstName ?? ''} ${personalRecord.lastName ?? ''}`.trim() || 'Username'
+      : 'Username';
     this.emailDetails[0].value = user?.email ? user.email : ADD_EMAIL;
 
     if (personalRecord?.address) {
@@ -138,9 +151,29 @@ export class ContactComponent implements OnInit {
     this.faxDetails[0].value = faxDetails ? faxDetails.value.toString() : ADD_FAX;
   }
 
-  //TODO create a special method for the address
-  createUpdateRecord(updateData: { index: number, value: string, type: string }) {
+  createUpdateRecordFromPopUp(updateData: {
+    imageUrl: string | undefined,
+    firstName: string | undefined, lastName: string | undefined
+  }) {
 
+    if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
+      console.log("create record");
+      this.createRecordFromPopUp(updateData);
+
+      return;
+    }
+
+    let personalRecord = this.user?.personalRecords.find(record => record.personal);
+
+    if (personalRecord !== undefined) {
+      console.log("update  record");
+      this.updateRecordFromPopUp(personalRecord, updateData);
+    } else {
+      console.error('Personal contact not found');
+    }
+  }
+
+  createUpdateRecord(updateData: { index: number, value: string, type: string }) {
     if (this.user?.personalRecords?.length === 0 || this.user?.personalRecords === null) {
       console.log("create record");
       this.createRecord(updateData);
@@ -160,11 +193,11 @@ export class ContactComponent implements OnInit {
 
   updateRecord(personalRecord: ContactResponse,
     updateData: { index: number, value: string, type: string }) {
-      const body: UpdateRecordBody = 
-      (updateData.type === ContactType.ADDRESS 
-        ? this.createUpdateRecordWithAddress(personalRecord, updateData.value) 
+    const body: UpdateRecordBody =
+      (updateData.type === ContactType.ADDRESS
+        ? this.createUpdateRecordWithAddress(personalRecord, updateData.value)
         : this.createUpdateRecordWithContact(personalRecord, updateData));
-  
+
 
     this.recordService.updateRecord(body).subscribe({
       next: (response) => {
@@ -180,7 +213,30 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  private createUpdateRecordWithAddress(personalRecord: ContactResponse,address: string) {
+  updateRecordFromPopUp(personalRecord: ContactResponse,
+    updateData: {
+      imageUrl: string | undefined,
+      firstName: string | undefined, lastName: string | undefined
+    }) {
+
+    this.recordService.updateRecord(this.createUpdateRecordBodyFromPopUp(personalRecord, updateData))
+      .subscribe({
+        next: (response) => {
+          this.userService.getUserDetails().subscribe({
+            next: (user) => {
+              this.user = user;
+              console.log('User data reloaded');
+            },
+            error: (err) => console.error('Error reloading user data:', err)
+          });
+        },
+        error: (err) => console.error('Error creating record:', err)
+      });
+
+      this.showPhotoNameOverlay = false;
+  }
+
+  private createUpdateRecordWithAddress(personalRecord: ContactResponse, address: string) {
     const body: UpdateRecordBody = {
       id: personalRecord.id,
       userId: this.user?.id,
@@ -189,6 +245,27 @@ export class ContactComponent implements OnInit {
       lastName: personalRecord.lastName,
       imageUrl: personalRecord.imageUrl,
       address: this.formatAddress(address),
+      contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, null)
+    }
+
+    return body;
+  }
+
+  private createUpdateRecordBodyFromPopUp(personalRecord: ContactResponse,
+    updateData: {
+      imageUrl: string | undefined,
+      firstName: string | undefined, lastName: string | undefined
+    }
+  ) {
+
+    const body: UpdateRecordBody = {
+      id: personalRecord.id,
+      userId: this.user?.id,
+      isPersonal: personalRecord.personal,
+      firstName: updateData.firstName ?? personalRecord.firstName,
+      lastName: updateData.lastName ?? personalRecord.lastName,
+      imageUrl: updateData.imageUrl ?? personalRecord.imageUrl,
+      address: personalRecord.address,
       contactDetails: this.updateContactDetails(personalRecord.id, personalRecord.contactDetails, null)
     }
 
@@ -215,11 +292,11 @@ export class ContactComponent implements OnInit {
 
   private updateContactDetails(recordId: BigInteger,
     existingContacts: ContactDetailResponse[],
-    updateData: { index: number, value: string, type: string } | null)  {
+    updateData: { index: number, value: string, type: string } | null) {
     let newContacts: ContactDetailsCreateBody[] = [];
     let updatesType: boolean = false;
 
-    if(updateData === null) {
+    if (updateData === null) {
       existingContacts.forEach(contact => {
         newContacts.push({
           recordId: recordId,
@@ -284,6 +361,14 @@ export class ContactComponent implements OnInit {
     });
   }
 
+  createRecordFromPopUp(updateData: {
+    imageUrl: string | undefined,
+    firstName: string | undefined, lastName: string | undefined
+  }) {
+
+    this.recordService.createRecord(this.createRecordBodyFromPopup(updateData));
+  }
+
   private createRecordWithContact(updateData: { index: number, value: string, type: string }) {
     const createRecordBody: CreateRecordBody = {
       userId: this.user?.id,
@@ -312,6 +397,23 @@ export class ContactComponent implements OnInit {
       lastName: '',
       imageUrl: '',
       address: this.formatAddress(address),
+      contactDetails: []
+    }
+
+    return createRecordBody;
+  }
+
+  private createRecordBodyFromPopup(updateData: {
+    imageUrl: string | undefined,
+    firstName: string | undefined, lastName: string | undefined
+  }) {
+    const createRecordBody: CreateRecordBody = {
+      userId: this.user?.id,
+      isPersonal: true,
+      firstName: updateData.firstName ?? '',
+      lastName: updateData.lastName ?? '',
+      imageUrl: updateData.imageUrl ?? '',
+      address: null,
       contactDetails: []
     }
 
